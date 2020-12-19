@@ -1,148 +1,57 @@
 
 
-idClasse=0;	//n° des classe d'équivalence
-idVecteur=0;   //n° des vecteurs
-idRepere=0;   //n° des reperes
-idLiaison=0;   //n° des liaisons
+//VARIABLES GLOBALES
 
-unite=30;      //Nombre de pixels par unité
-
-piloteParLaSouris=null;	//solide piloté par la souris
+ACTION="";
+SOUS_ACTION="";
+CLASSE=0;
 
 
-RAIDEUR_LIAISONS=10;
-RAIDEUR_SOURIS=1;
-
-//Initialisation
-window.onload = function()
-{
-	scene=new Kinetic.Stage({
-					container: "scene",
-					width: 1000,
-					height: 600
-				});
-				
-	scene.nbClasses=function()
-	{
-		return scene.classes.children.length;
-	}
-				
-	//Définition des calques
-	scene.calquePrincipal=new Kinetic.Layer();
-	scene.calquePrincipal.x(200);
-	scene.calquePrincipal.y(200);
-
-	scene.calqueSelection=new Kinetic.Layer();
-	scene.calqueSelection.x(200);
-	scene.calqueSelection.y(200);
-
-	scene.add(scene.calqueSelection);
-	scene.add(scene.calquePrincipal);
+dessin = new createjs.Stage("canvas_schema_cinematique");
+dessin.enableMouseOver(); //Permet de faire les mouseover et les css "cursor"
 	
-	//Groupe contenant les classes d'équivalence
-	scene.classes=new Kinetic.Group();
-	scene.calquePrincipal.add(scene.classes);
-	
+//Schema (= un containeur, un peu comme les canvas, mais avec des echelles adapté, etc.)
+schema = new Schema();
+schema._repere=new Repere({x:0,y:0},0);
+schema._repere.couleur("black");
+schema.addChild(schema._repere);
+	dessin.addChild(schema);
+schema.x=dessin.canvas.width/2;//On place l'origine du schéma au milieu
+schema.y=dessin.canvas.height/2;
+dessin.addEventListener("stagemousemove", schema.updateSourisFromStagePosition);//Permet d'envoyer les position de la souris
+
+
+C0=new Classe_Equivalence();
+C1=new Classe_Equivalence();
+//C2=new Classe_Equivalence();
+C1.x=100;
+C1.y=50;
+
+//C2.x=-10;
+//C2.y=-50;
+
+C0.bloque(true)
+
+schema.ajouteClasse(C0);
+schema.ajouteClasse(C1);
+//schema.ajouteClasse(C2);
+
+
+
+// Point qui suit la souris (et qui sert de curseur)
+suiveur = new SuiveurSouris();
+schema.addChild(suiveur);
+
+ajouteLiaison(0,1,"pivot",{x:0,y:0})
+//C1.x+=10
+ajouteLiaison(0,1,"pivot",{x:200,y:20})
+//C1.y+=10
+
+
+// Appel des modifs toutes les 30 ms
+createjs.Ticker.setFPS(30);	
+createjs.Ticker.addEventListener("tick", dessin);
 
 
 
 
-
-
-
-	//TEST CLASSES
-	solide1=new Classe();
-	solide1.draggable(true);
-	solide1.x(500);
-	solide1.y(000);
-	scene.classes.add(solide1);
-
-	solide2=new Classe();
-//	solide2.draggable(true);
-	solide2.x(000);
-	solide2.y(000);
-	solide2.etat("bloque");
-	scene.classes.add(solide2);
-
-	solide3=new Classe();
-	solide3.draggable(false);
-	solide3.x(250);
-	solide3.y(00);
-	//solide3.etat("bloque");
-	scene.classes.add(solide3);
-	
-	// LIAISONS
-	
-	//Liaison 2-3
-	pivot23=new DemiPivot();
-	pivot23.x(125);
-	pivot23.y(0);
-	solide2.ajouteLiaison(pivot23);
-	
-	pivot32=new DemiPivot();
-	pivot32.x(-125);
-	pivot32.y(0);
-	solide3.ajouteLiaison(pivot32);
-
-	pivot23.partenaire(pivot32);
-	pivot32.partenaire(pivot23);
-	
-
-	//Liaison 1-3
-	pivot13=new DemiPivot();
-	pivot13.x(-125);
-	pivot13.y(0);
-	solide1.ajouteLiaison(pivot13);
-	
-	pivot31=new DemiPivot();
-	pivot31.x(125);
-	pivot31.y(0);
-	solide3.ajouteLiaison(pivot31);
-
-	pivot13.partenaire(pivot31);
-	pivot31.partenaire(pivot13);
-	
-
-	//TEST AUTRES
-
-	
-
-	//Dessin de la scene
-
-	scene.draw();
-
-	
-	
-	//Systeme
-	matA=zeroes(scene.nbClasses()*3,scene.nbClasses()*3);//Matrice du système
-	matB=zeroes(scene.nbClasses()*3);	//Second membre
-	resultat=zeroes(scene.nbClasses()*3);	//Resultat du système (0 par defaut)
-
-
-
-
-
-	//Solvage
-
-	scene.fonctionAnimationMouvement=function(frame)
-	{
-		setSysteme();	//Mise en place du système
-		//print2D(matA);
-		updateResultatSysteme(solveSysteme());	//On résout et on update les nouvelles coordonnées dans la foulée
-	}
-	scene.animationMouvement=new Kinetic.Animation(scene.fonctionAnimationMouvement,scene.calquePrincipal)
-
-
-	//Initialisation des boites de dialogues
-
-		//Boite Ajout d'une liaison
-
-			$("#ajouterLiaison_Piece1").append('<option value=0>'+scene.classes.children[0].nom()+'</option>');
-			$("#ajouterLiaison_Piece2").append('<option value=1>'+scene.classes.children[1].nom()+'</option>');
-			for(var i=2;i<scene.classes.children.length;i++)
-			{
-				$("#ajouterLiaison_Piece1").append('<option value='+i+'>'+scene.classes.children[i].nom()+'</option>');
-				$("#ajouterLiaison_Piece2").append('<option value='+i+'>'+scene.classes.children[i].nom()+'</option>');
-			}
-	
-}

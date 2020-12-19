@@ -1,0 +1,20 @@
+
+
+
+/*Les boutons, en général */
+.bouton
+{
+	cursor : pointer;
+	margin:auto;
+	display:inline-block;
+	margin: 4px 4px 4px 4px;
+	border-radius:5px;
+	box-shadow: 4px 4px 4px #CCC;
+}
+
+.bouton:hover
+{
+	border:black;
+	box-shadow: 2px 2px 2px #aaa;
+	margin: 6px 2px 2px 6px;
+}

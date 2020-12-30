@@ -31,7 +31,7 @@ var PivotFlottante = function()
 		this.poseLiaison=function()
 		{
 			ajouteLiaison();
-			schema.removeChild(cela);
+			resetActions();
 		}
 
 	//==========================

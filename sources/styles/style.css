@@ -1,5 +1,10 @@
 
+/* MENUS */
 
+.menu_secondaire, .menu_tertiaire
+{
+	display:none;
+}
 
 /*Les boutons, en général */
 .bouton

@@ -12,7 +12,6 @@ update_liste_CE1=function()
 	for(var i=0; i<schema.classes.length; i++)
 	{
 		classe=schema.classes[i];
-		console.log(classe.numero())
 		if(!$("#select_CE2 option[value='"+classe.numero()+"']").is(':selected'))//...si c'est pas déjà dans l'autre
 		{
 			var ajout="<option value=\""+classe.numero()+"\"";
@@ -63,4 +62,29 @@ getClasse1 = function()
 getClasse2 = function()
 {
 	return getClasse($("#select_CE2").val());
+}
+
+
+
+
+// ******************************************************************
+// Fonction qui supprime ce qu'il y a dans la souris (suiveur).
+// A utiliser à chaque nouvelle option cliquer, ou en fin d'action
+videSuiveur = function()
+{
+	for(var i=suiveur.children.length-1; i>1; i--)
+		suiveur.removeChildAt(i)
+}
+
+// ******************************************************************
+// Fonction qui remet à zéro les actions, et qui vide le curseur suiveur
+// (utile à la fin d'une action, ou pour annuler une action courrante)
+resetActions = function()
+{
+	videSuiveur();
+	ACTION="";
+	SOUS_ACTION="";
+	CLASSE=0;
+	
+	$(".menu_tertiaire").css("display","none");//Efface les menus tertiaires
 }

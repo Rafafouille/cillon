@@ -19,6 +19,7 @@ var Classe_Equivalence = function(_param_)
 		this._couleur="black";	//Couleur de la classe
 		this.liste_liaisons=[]	//Liste de toutes les référence des demi-liaisons concernées par la classe
 		this._bloque = false; //Si la pièce ne doit pas bouger (bati)
+		this._lastPosition = {x:0,y:0,theta:0}	//Dernière position sauvegarder (pour rétablir après simulation)
 		
 		//Paramètres fournis en argument du constructeur
 
@@ -104,6 +105,10 @@ var Classe_Equivalence = function(_param_)
 		}
 		
 		
+		this.lastPosition=function()
+		{
+			return this._lastPosition;
+		}
 	//===============
 	//Autres fonctions membres
 	//==========================
@@ -122,9 +127,7 @@ var Classe_Equivalence = function(_param_)
 		{
 			//Ajout graphique
 			this.addChild(_demiLiaison);
-			console.log(_centre)
 			var position = schema.localToLocal(_centre.x,_centre.y,this);
-			//console.log(position);
 			_demiLiaison.x=position.x;
 			_demiLiaison.y=position.y;
 			
@@ -153,6 +156,51 @@ var Classe_Equivalence = function(_param_)
 				}
 			}
 				
+		}
+		
+		
+		// Enregistre la position courante (avant simulation, par exemple)
+		this.sauveLastPosition = function()
+		{
+			this._lastPosition = {x:this.x,y:this.y,theta:this.rotation}
+		}
+		//Restore la position courante (après simulation, par exemple)
+		this.restoreLastPosition = function()
+		{
+			this.x=this._lastPosition.x;
+			this.y=this._lastPosition.y;
+			this.rotation=this._lastPosition.theta;
+		}
+		
+		
+		//Fonction qui décale l'origine de la pièce pour quelle soit au barycentre des liaisons (améliore le conditionnement de la matrice)
+		this.recentreOrigine = function()
+		{
+			if(this.liste_liaisons.length==0)
+				return;
+		
+			//recherche du barycentre des liaisons, dans le repère local
+			var barycentre = {x:0,y:0}
+			for(var i=0; i<this.liste_liaisons.length; i++)
+			{
+				var liaison_i = this.liste_liaisons[i];
+				barycentre.x += liaison_i.x;
+				barycentre.y += liaison_i.y;
+			}
+			barycentre.x/=this.liste_liaisons.length;
+			barycentre.y/=this.liste_liaisons.length;
+			
+			//déplacement des éléments (liaison et autres objet)
+			for(var i=0; i<this.children.length; i++)
+			{
+				var element_i = this.children[i];
+				element_i.x -= barycentre.x;
+				element_i.y -= barycentre.y;
+			}
+			//déplacement de la pièce pour revenir dans la même position
+			var bary_global = this.localToLocal(barycentre.x, barycentre.y, this.parent)
+			this.x += bary_global.x-this.x;
+			this.y += bary_global.y-this.y;
 		}
 	//==========================
 	//Graphismes

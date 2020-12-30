@@ -112,11 +112,16 @@ var PivotMale = function()
 		
 			//NOTE : il faudra peut être condenser les lignes suivantes
 		
-			var KK = [	[k,	0,	k*O1L1.y,	k,	0,	-k*O2L2.y],
+			/*var KK = [	[k,	0,	k*O1L1.y,	k,	0,	-k*O2L2.y],
 					[0,	-k,	-k*O1L1.x,	0,	k,	k*O2L2.x],
-					[k*O1L1.y,k*O1L1.x,-k*(O1L1.x*O1L1.x+O1L1.y*O1L1.y),-k*O1L1.y,k*O1L1.x,k*(O1L1.x*O2L2.x+O1L1.y*O2L2.y)]	]
+					[k*O1L1.y,k*O1L1.x,-k*(O1L1.x*O1L1.x+O1L1.y*O1L1.y),-k*O1L1.y,k*O1L1.x,k*(O1L1.x*O2L2.x+O1L1.y*O2L2.y)]	]*/
 					
-			var FF = [k*L1L2.x,k*L1L2.y,k*(O1L1.x*L1L2.y-O1L1.y*L1L2.x)]
+			var KK = [	[-k,		0,		k*O1L1.y,				k,		0,		-k*O2L2.y],
+					[0,		-k,		-k*O1L1.x,				0,		k,		k*O2L2.x],
+					[O1L1.y*k,	-O1L1.x*k,	-k*(O1L1.y*O1L1.y+O1L1.x*O1L1.x),	-O1L1.y*k,	O1L1.x*k,	k*(O1L1.y*O2L2.y+O1L1.x*O2L2.x)]	]
+					
+			//var FF = [k*L1L2.x,k*L1L2.y,k*(O1L1.x*L1L2.y-O1L1.y*L1L2.x)]
+			var FF = [-k*L1L2.x,	-k*L1L2.y,	k*(O1L1.y*L1L2.x-O1L1.x*L1L2.y)]
 			
 			//On recopie dans les bonnes lignes de K et F
 			for(var i=0; i<3 ; i++) // Pour chacune des 3 lignes

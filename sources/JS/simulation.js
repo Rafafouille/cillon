@@ -17,9 +17,9 @@ resout = function()
 	{
 		n=3*i;
 		schema.classes[i].x += solution.get([3*i,0])
-		schema.classes[i].y -= solution.get([3*i+1,0])
+		schema.classes[i].y += solution.get([3*i+1,0])
 		schema.classes[i].rotation += solution.get([3*i+2,0])*180/math.pi
-		console.log("Classe n0"+i+" : ( "+solution.get([3*i,0])+" , "+solution.get([3*i+1,0])+" , "+solution.get([3*i+2,0])*180/math.pi+" )")
+//		console.log("Classe n0"+i+" : ( "+solution.get([3*i,0])+" , "+solution.get([3*i+1,0])+" , "+solution.get([3*i+2,0])*180/math.pi+" )")
 	}
 }
 

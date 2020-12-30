@@ -118,10 +118,31 @@ var Schema = function()
 		
 		this.choisitCouleur=function(i)
 		{
+			if(typeof(i) == 'undefined')
+				i = this.classes.length; // On prend la 1ère couleur libre par defaut
 			liste_Couleurs=["black","red","blue","Green","Orange","Purple","SaddleBrown","Navy","Maroon","DeepSkyBlue","LimeGreen","DarkGoldenRod","Orchid"];
 			return liste_Couleurs[i%(liste_Couleurs.length)]
 		}
 
+		//Fonction qui demande à chaque CE de sauvegarder leur position.
+		this.sauvePositions = function()
+		{
+			for(var i=0;i<this.classes.length;i++)
+			{
+				c= this.classes[i]
+				c.sauveLastPosition();
+			}
+		}
+
+		//Fonction qui demande à chaque CE de recharger leur dernière position sauvegardée.
+		this.restorePositions = function()
+		{
+			for(var i=0;i<this.classes.length;i++)
+			{
+				c= this.classes[i]
+				c.restoreLastPosition();
+			}
+		}
 
 	//==========================
 	//Graphismes
@@ -146,8 +167,18 @@ var Schema = function()
 
 
 		this.addEventListener("tick",function(){
-				ceci.classes[0].rotation+=0.2;
-				resout();
+		
+				if(ACTION=="simule")
+				{
+					ceci.classes[1].rotation+=0.5;
+					resout();
+					resout();
+					resout();
+					resout();
+					resout();
+					resout();
+					resout();
+				}
 			});
 
 

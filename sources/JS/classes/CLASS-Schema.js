@@ -13,8 +13,9 @@ var Schema = function()
 	
 		this._echelle=40;	//Nombre de pixel par unité
 		this.classes=[];	//Liste des classes d'équivalence
-//		this._nbClasses=0; //Nombre de classes (ça évite de recompter dans this.classes à chaque fois)
 		this._souris={x:0,y:0};
+//		this._t0=0;	//Temps initiale du début de la simulation
+		this._tSimulation = 0;	//Temps écoulé depuis le début de la simulation (pauses incluses)
 
 	//==========================
 	//getter/setter
@@ -99,6 +100,24 @@ var Schema = function()
 			return -this._souris.y*this._echelle;
 		}
 
+
+		//Fonction qui renvoie la date initiale de la simulation depuis t0
+		/*this.t0 = function(t0)
+		{
+			if(typeof(t0)!='undefined')
+				this._t0=t0;
+			return this._t0;
+		}*/
+
+
+		//Fonction qui renvoie le temps de la simulation depuis le début de la simu
+		this.tSimulation = function(t)
+		{
+			if(typeof(t)!='undefined')
+				this._tSimulation=t;
+			return this._tSimulation
+		}
+
 	//==========================
 	//Autres fonctions membres
 	//==========================
@@ -120,7 +139,8 @@ var Schema = function()
 		{
 			if(typeof(i) == 'undefined')
 				i = this.classes.length; // On prend la 1ère couleur libre par defaut
-			liste_Couleurs=["black","red","blue","Green","Orange","Purple","SaddleBrown","Navy","Maroon","DeepSkyBlue","LimeGreen","DarkGoldenRod","Orchid"];
+			//liste_Couleurs=["black","red","blue","Green","Orange","Purple","SaddleBrown","Navy","Maroon","DeepSkyBlue","LimeGreen","DarkGoldenRod","Orchid"];
+			liste_Couleurs=["#000000","#FF0000","#0000FF","#00FF00","#FF9900","#FF00FF","#990000","#000099","#00FFFF","#99FF00"];
 			return liste_Couleurs[i%(liste_Couleurs.length)]
 		}
 
@@ -143,7 +163,8 @@ var Schema = function()
 				c.restoreLastPosition();
 			}
 		}
-
+		
+		
 	//==========================
 	//Graphismes
 	//==========================
@@ -165,22 +186,27 @@ var Schema = function()
 		}
 
 
-
-		this.addEventListener("tick",function(){
+		cela = this;
+		this.addEventListener("tick",function(event){
 		
 				if(ACTION=="simule")
 				{
-					ceci.classes[1].rotation+=0.5;
-					resout();
-					resout();
-					resout();
-					resout();
-					resout();
-					resout();
-					resout();
+					//console.log(">>>>>>>>>>>>>>>>>>>");
+					//console.log(event);
+					//console.log(event.delta);
+					if(event.delta=="undefined")
+						ACTION=""
+					schema._tSimulation += event.delta/1000.	//On fait s'écouler le temps
+					//console.log(schema._tSimulation);
+					for(var i=0;i<PRECISION;i++)
+						resout();
 				}
-			});
+			}); 
 
+		
+		
+
+		
 
 }
 Schema.prototype = Object.create(createjs.Container.prototype);//On recopie le prototype de createjs.Stage

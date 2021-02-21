@@ -45,6 +45,19 @@ update_liste_CE2=function()
 	}
 }
 
+// Met à jour la liste de CE (seules) dans le menu
+update_liste_CE = function()
+{
+	//On vide
+	$("#select_CE").empty();
+	for(var i=0 ; i< schema.classes.length; i++)
+	{
+		var classe=schema.classes[i];
+		var ajout="<option value=\""+classe.numero()+"\">"+classe.nom()+"</option>";
+		$("#select_CE").append(ajout);
+	}
+}
+
 
 
 
@@ -64,7 +77,11 @@ getClasse2 = function()
 	return getClasse($("#select_CE2").val());
 }
 
-
+// Identique à getClasse, sauf qu'il renvoie direct la référence de la classe 2 dans le menu de sélection
+getClasseSelectionnee = function()
+{
+	return getClasse($("#select_CE").val());
+}
 
 
 // ******************************************************************
@@ -84,7 +101,55 @@ resetActions = function()
 	videSuiveur();
 	ACTION="";
 	SOUS_ACTION="";
-	CLASSE=0;
+	CLASSE=-1;
+	deselectionneToutLeMonde();
 	
 	$(".menu_tertiaire").css("display","none");//Efface les menus tertiaires
+	$(".menu_secondaire .bouton_menu").css("background-color","white");//Vire le bouton en surbrillance
+	
+	$("#bouton_lancer_simulation img").attr('src','./sources/images/icone_simule.svg');//On remet l'icone "lecture" de la simulation
+	$("#info_classe").hide(400); //Cache le menu de séleciton des CE
+	
+	
+}
+
+
+// **********************************************************************
+// Fonction qui remonte les parents jusqu'à trouver la classe d'équivalence
+trouveClasse = function(cible)
+{
+	while(!cible.type || typeof cible.type() == "undefined" || cible.type() != "classe")
+		cible = cible.parent;
+		
+	return cible;
+}
+
+
+
+// ************************************************
+// Fonction qui remplie la zone d'info de la CL
+update_info_CE=function(classe)
+{
+	$("#info_CE_nom").val(classe.nom());
+	$("#info_CE_couleur").val(classe.couleur());
+	$("#info_CE_bloque").prop("checked",classe.bloque());
+	$("#info_CE_schema_visible").prop("checked",classe.schema.visible);
+	$("#info_CE_annotations_visible").prop("checked",classe.annotations.visible);
+}
+
+
+
+// ****************************************************
+// Calcule l'angle entre deux vecteur V1 et V2 de la forme {x: , y: }
+angleEntreVecteurs = function(V1,V2)
+{
+	return Math.acos((V1.x*V2.x+V1.y* V2.y)/norme(V1)/norme(V2))
+}
+
+
+// *******************************************
+// Calcule la norme de V de la forme {x: ,  y: }
+norme = function(V)
+{
+	return Math.sqrt(V.x*V.x+V.y*V.y)
 }

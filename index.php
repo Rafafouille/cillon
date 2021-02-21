@@ -35,6 +35,7 @@
 		<script type="text/javascript" src="./sources/JS/classes/liaisons/CLASS-PivotFlottante.js"></script>
 		<script type="text/javascript" src="./sources/JS/classes/CLASS-SuiveurSouris.js"></script>
 		<script type="text/javascript" src="./sources/JS/simulation.js"></script>
+		<script type="text/javascript" src="./sources/JS/classes/CLASS-Ligne.js"></script>
 		
 		
 		
@@ -44,27 +45,36 @@
 	</head>
 	<body>
 		<div id="menu_principal">
-			<div class="bouton" id="bouton_editer" title="Éditer le mécanisme" onclick="ouvre_ferme_menu_editer();">
+			<div class="bouton_menu" id="bouton_editer" title="Éditer le mécanisme" onclick="ouvre_ferme_menu_editer();">
 				<img src="./sources/images/crayon.svg" style="height:50px;" alt="[ ÉDITER ]"/>
 			</div>
-			<div class="bouton" id="bouton_simuler" title="Simuler">
+			<div class="bouton_menu" id="bouton_simuler" title="Simuler" onclick="ouvre_ferme_menu_simuler();">
 				<img src="./sources/images/icone_simule.png" style="height:50px;" alt="[ SIMULER ]"/>
 			</div>
 		</div>
 		<div class="menu_secondaire" id="menu_editer">
-			<div class="bouton" id="bouton_add_CE" title="Ajouter une classe d'équivalence" onclick="place_new_CE()">
+			<div class="bouton_menu" id="bouton_select" title="Sélectionne un objet pour l'éditer" onclick="mode_selection()">
+				<img src="./sources/images/icone_select.svg" style="height:50px;" alt="[ SÉLECTIONNE ]"/>
+			</div>
+			<div class="bouton_menu" id="bouton_add_CE" title="Ajouter une classe d'équivalence" onclick="place_new_CE()">
 				<img src="./sources/images/icone_add_CE.svg" style="height:50px;" alt="[ AJOUTER CLASSE D'ÉQUIVALENCE ]"/>
 			</div>
-			<div class="bouton" id="bouton_dessiner" title="Dessiner sur une classe d'équivalence">
+			<div class="bouton_menu" id="bouton_dessiner" title="Dessiner sur une classe d'équivalence" onclick="lance_new_dessin()">
 				<img src="./sources/images/crayon.svg" style="height:50px;" alt="[DESSINER]"/>
 			</div>
-			<div class="bouton new_liaison" id="bouton_add_liaison_pivot" onclick="place_new_pivot()" title="Ajouter une pivot">
+			<div class="bouton_menu new_liaison" id="bouton_add_liaison_pivot" onclick="place_new_pivot()" title="Ajouter une pivot">
 				<img src="./sources/images/icone_pivot.svg" style="height:50px;" alt="[PIVOT]"/>
 			</div>
 		</div>
 		<div class="menu_secondaire"  id="menu_simuler">
-			<div class="bouton" id="bouton_agire" title="Agir sur le mécanisme">
-				<img src="./sources/images/main.svg" style="height:50px;" alt="[AGIR]"/>
+			<div class="bouton_menu" id="bouton_lancer_simulation" title="Lancer la simulation" onclick="lancer_simulation()">
+				<img src="./sources/images/icone_simule.svg" style="height:50px;" alt="[ LECTURE ]"/>
+			</div>
+			<div class="bouton_menu" id="bouton_lancer_reset" title="Réinitialiser les positions" onclick="schema.restorePositions()">
+				<img src="./sources/images/icone_simule_reset.svg" style="height:50px;" alt="[ RESET ]"/>
+			</div>
+			<div class="bouton_menu" id="bouton_agire" title="Agir sur le mécanisme">
+				<img src="./sources/images/main.svg" style="height:50px;" alt="[ AGIR ]"/>
 			</div>
 		</div>
 		<div class="menu_tertiaire"  id="menu_selection_pieces">
@@ -77,8 +87,28 @@
 				</select>
 			</form>
 		</div>
+		<div class="menu_tertiaire"  id="menu_selection_CE">
+			<form>
+				<label for="select_CE">Classe d'équivalence : </label>
+				<select id="select_CE">
+				</select>
+			</form>
+		</div>
 		<div id="div_schema_cinematique" style="border:solid;">
 						<canvas id="canvas_schema_cinematique" width="800" height="400"></canvas>
+		</div>
+		
+		<div id="info_classe" class="boite_info" style="display:none;">
+			<h2>Classe d'équivalence</h2>
+			<div class="contenu_info">
+				<form onkeypress="return event.keyCode != 13;">
+					<label for="info_CE_nom">Nom : </label><input type="text" name="info_CE_nom" id="info_CE_nom" placeholder="Nom de la classe d'équivalence" onchange="getClasse(CLASSE).nom($(this).val())"/>
+					<label for="info_CE_couleur">Couleur : </label><input type="color" name="info_CE_couleur" id="info_CE_couleur" onChange="getClasse(CLASSE).couleur($(this).val())"/><br/>
+					<label for="info_CE_bloque">Bloqué : </label><input type="checkbox" name="info_CE_bloque" id="info_CE_bloque" onChange="getClasse(CLASSE).bloque($(this).prop('checked'))"/><br/>
+					<label for="info_CE_schema_visible">Schéma visible : </label><input type="checkbox" name="info_CE_schema_visible" id="info_CE_schema_visible" onChange="getClasse(CLASSE).schema.visible=$(this).prop('checked')"/><br/>
+					<label for="info_CE_annotations_visible">Annotations visibles : </label><input type="checkbox" name="info_CE_annotations_visible" id="info_CE_annotations_visible" onChange="getClasse(CLASSE).annotations.visible=$(this).prop('checked')"/>
+				</form>
+			</div>
 		</div>
 	</body>
 	
@@ -86,4 +116,11 @@
 	
 	<!-- MAIN -->
 	<script type="text/javascript" src="./sources/JS/main.js"></script>
+	<script type="text/javascript" src="./sources/JS/evenements_souris.js"></script>
+	
+	<?php
+	
+		$fichier = "test.php";
+		include("dessins/".$fichier);
+	?>
 </html>

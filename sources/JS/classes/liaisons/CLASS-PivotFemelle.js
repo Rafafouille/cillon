@@ -7,6 +7,8 @@ var PivotFemelle= function()
 	//==========================
 
 		PivotMale.call(this);
+	
+		this.genre("femelle");	//Pour se différencier de la pièce mâle
 
 }
 PivotFemelle.prototype = Object.create(PivotMale.prototype);//On recopie le prototype de createjs.Stage

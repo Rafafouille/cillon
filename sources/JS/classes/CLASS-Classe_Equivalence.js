@@ -20,6 +20,8 @@ var Classe_Equivalence = function(_param_)
 		this.liste_liaisons=[]	//Liste de toutes les référence des demi-liaisons concernées par la classe
 		this._bloque = false; //Si la pièce ne doit pas bouger (bati)
 		this._lastPosition = {x:0,y:0,theta:0}	//Dernière position sauvegarder (pour rétablir après simulation)
+		this._selectionne = false;	//Dit si on est actuellement sélectionné
+		this._type = "classe";	//Type d'objet
 		
 		//Paramètres fournis en argument du constructeur
 
@@ -45,7 +47,24 @@ var Classe_Equivalence = function(_param_)
 			if(typeof(c)!='undefined')
 			{
 				this._couleur=c;
-				this._repere.couleur(c);
+				for(var i=0;i<this.schema.children.length;i++)
+				{
+					var enfant = this.schema.children[i];
+					if(enfant.couleur && typeof(enfant.couleur) === "function")	//Si la méthode couleur existe et que c'est une fonction
+						enfant.couleur(c);
+				}
+				for(var i=0;i<this.image.children.length;i++)
+				{
+					var enfant = this.image.children[i];
+					if(enfant.couleur && typeof(enfant.couleur) === "function")	//Si la méthode couleur existe et que c'est une fonction
+						enfant.couleur(c);
+				}
+				for(var i=0;i<this.annotations.children.length;i++)
+				{
+					var enfant = this.annotations.children[i];
+					if(enfant.couleur && typeof(enfant.couleur) === "function")	//Si la méthode couleur existe et que c'est une fonction
+						enfant.couleur(c);
+				}
 			}
 			return this._couleur;
 		}
@@ -109,6 +128,12 @@ var Classe_Equivalence = function(_param_)
 		{
 			return this._lastPosition;
 		}
+		
+		
+		this.type=function()
+		{
+			return this._type;
+		}
 	//===============
 	//Autres fonctions membres
 	//==========================
@@ -126,7 +151,8 @@ var Classe_Equivalence = function(_param_)
 		this.ajouteDemiLiaison = function(_demiLiaison,_centre)
 		{
 			//Ajout graphique
-			this.addChild(_demiLiaison);
+			this.schema.addChild(_demiLiaison);
+			_demiLiaison.classe(this);	//On ajoute la ref vers la classe
 			var position = schema.localToLocal(_centre.x,_centre.y,this);
 			_demiLiaison.x=position.x;
 			_demiLiaison.y=position.y;
@@ -191,9 +217,21 @@ var Classe_Equivalence = function(_param_)
 			barycentre.y/=this.liste_liaisons.length;
 			
 			//déplacement des éléments (liaison et autres objet)
-			for(var i=0; i<this.children.length; i++)
+			for(var i=0; i<this.image.children.length; i++)
 			{
-				var element_i = this.children[i];
+				var element_i = this.image.children[i];
+				element_i.x -= barycentre.x;
+				element_i.y -= barycentre.y;
+			}
+			for(var i=0; i<this.schema.children.length; i++)
+			{
+				var element_i = this.schema.children[i];
+				element_i.x -= barycentre.x;
+				element_i.y -= barycentre.y;
+			}
+			for(var i=0; i<this.annotations.children.length; i++)
+			{
+				var element_i = this.annotations.children[i];
 				element_i.x -= barycentre.x;
 				element_i.y -= barycentre.y;
 			}
@@ -202,17 +240,161 @@ var Classe_Equivalence = function(_param_)
 			this.x += bary_global.x-this.x;
 			this.y += bary_global.y-this.y;
 		}
+		
+		
+		// Fonction qui floute la CE
+		this.floute = function()
+		{
+			this.filters = [new createjs.BlurFilter(5, 5, 10)] //Filtre flou
+			
+			// On met en cache la CL (dans un rectangle dont on calcule les dimensions). Voir la doc
+			this.updateBounds();
+			var bounds = this.getBounds();
+			var boundsFlou = this.filters[0].getBounds() //Padding en plus lié au flou
+			//console.log("<<<<<<<<<<<<<<<<<<<<<<<");
+			//console.log(bounds);
+			//console.log(boundsFlou)
+			this.cache(bounds.x+boundsFlou.x, 	bounds.y+boundsFlou.y, 	bounds.width+boundsFlou.width, 	bounds.height+boundsFlou.height ) //On met en cache (nécessaire)
+			//this.cache(-1000, 	-1000, 	2000,2000 ) 
+			this.alpha = 0.25;
+		}
+		
+		this.updateBounds = function()
+		{
+			var xmin=0;
+			var ymin=0;
+			var xmax=0;
+			var ymax=0;
+			
+			if(this.schema.getBounds()!=null)
+			{
+				var b_schema = this.schema.getBounds();
+				xmin=b_schema.x;
+				ymin=b_schema.y;
+				xmax=b_schema.x+b_schema.width;
+				ymax=b_schema.y+b_schema.height;
+			}
+			
+			if(this.image.getBounds()!=null)
+			{
+				var b_image= this.image.getBounds();
+				xmin=Math.min(xmin,b_image.x);
+				ymin=Math.min(ymin,b_image.y);
+				xmax=Math.max(xmax,b_image.x+b_image.width);
+				ymax=Math.max(ymax,b_image.y+b_image.height);
+			}
+			
+			if(this.annotations.getBounds()!=null)
+			{
+
+				var b_annotations = this.annotations.getBounds();
+				xmin=Math.min(xmin,b_annotations.x);
+				ymin=Math.min(ymin,b_annotations.y);
+				xmax=Math.max(xmax,b_annotations.x+b_annotations.width);
+				ymax=Math.max(ymax,b_annotations.y+b_annotations.height);
+				// A compléter avec les autres groupes (
+			}
+			
+			this.setBounds(xmin,ymin,xmax-xmin,ymax-ymin);
+		}
+		
+		// Fonction qui défloute
+		this.defloute = function()
+		{
+			this.filters = null
+			this.uncache();
+			this.alpha=1;
+		}
+		
+		
+		// Fonction qui sélectionne la CL (met en surbrillance, tout ça)
+		this.selectionne = function()
+		{
+			deselectionneToutLeMonde(); //On vire tous les autres
+			CLASSE = this.numero()
+			update_info_CE(this);	//Met à jour la zone d'info
+			
+			for(var i=0;i<schema.classes.length;i++)
+			{
+				if(i!=CLASSE)
+					schema.classes[i].floute()
+			}
+			this._selectionne = true;
+		}
+		
+		
+		//Fonction qui retire la surbrillance, etc...
+		this.deselectionne = function()
+		{
+			for(var i=0;i<schema.classes.length;i++)
+			{
+				if(i!=CLASSE)
+					schema.classes[i].defloute()
+			}
+			this._selectionne = false;
+			CLASSE = -1;
+		}
+		
+		//Fonction qui switch le mode sélectionné / désélectionné
+		this.selectionneDeselectionne=function()
+		{
+			if(this._selectionne)
+			{
+				this.deselectionne();			
+				$("#info_classe").hide(400);
+			}
+			else
+			{
+				$("#info_classe").show(400);
+				this.selectionne();
+			}
+		}
+		
+		
+		//Fonction qui dessine une ligne, (enregistre ses bornes) et l'ajoute à la classe
+		//Renvoie un ref de la ligne
+		this.dessineLigne = function(a,b,c,d)
+		{
+		
+			var ligne = new Ligne(a,b,c,d);
+			ligne.couleur(this._couleur);
+			this.schema.addChild(ligne)
+			
+				
+		
+			
+			return ligne
+		}
+		
 	//==========================
 	//Graphismes
 	//==========================
-	
-		this._repere=new Repere({x:0,y:0},0);
-		this.addChild(this._repere);
+		this.image = new createjs.Container()
+		this.addChild(this.image);
+		this.schema = new createjs.Container()
+		this.addChild(this.schema);
+		this.annotations = new createjs.Container()
+		this.addChild(this.annotations);
 		
+		this._repere=new Repere({x:0,y:0},0);
+		this.annotations.addChild(this._repere);
+		
+
 
 	//==========================
 	//Evénements
 	//==========================
+		this.cursor="pointer";
+			
+		this.addEventListener("click",function(event)
+			{
+				if(ACTION == "SELECTION")
+				{
+					cible = event.target;
+					trouveClasse(cible).selectionneDeselectionne();
+				}
+			})
+	
 	
 	
 }

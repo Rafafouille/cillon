@@ -51,7 +51,11 @@ function Base(__arg1__)
 			return this._vy;
 		}
 		
-
+		//Renvoie la classe d'équivalence dans lequel il fait partie
+		this.getClasse=function()
+		{
+			return this.parent.getClasse();
+		}
 		
 		
 	//==========================

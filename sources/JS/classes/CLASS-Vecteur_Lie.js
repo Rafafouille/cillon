@@ -71,6 +71,12 @@ var Vecteur_Lie = function(__arg1__,__vecteur__)
 			return this._couleur;
 		}
 
+		//Renvoie la classe d'équivalence dans lequel il fait partie
+		this.getClasse=function()
+		{
+			return this.parent.getClasse();
+		}
+		
 	//==========================
 	//Autres fonctions membres
 	//==========================
@@ -120,12 +126,12 @@ var Vecteur_Lie = function(__arg1__,__vecteur__)
 		{
 			//dessin.canvas.style.cursor = "pointer";
 			this._axe.alpha=1;
-			dessin.update();
+			//dessin.update();
 		}
 		this.fonctionMouseOut=function(evt)
 		{
 			this._axe.alpha=0.2;
-			dessin.update();
+			//dessin.update();
 		}
 		
 		this.on("mouseover",this.fonctionMouseOver);

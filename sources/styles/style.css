@@ -7,7 +7,7 @@
 }
 
 /*Les boutons, en général */
-.bouton
+.bouton_menu
 {
 	cursor : pointer;
 	margin:auto;
@@ -17,9 +17,32 @@
 	box-shadow: 4px 4px 4px #CCC;
 }
 
-.bouton:hover
+.bouton_menu:hover
 {
 	border:black;
 	box-shadow: 2px 2px 2px #aaa;
 	margin: 6px 2px 2px 6px;
+}
+
+
+/* BOITE INFO CE */
+
+.boite_info
+{
+	/*border : solid;*/
+	border-radius : 10px;
+	background-color:#EEEEEE;
+	margin : 10px;
+	overflow : hidden;
+	width:800px;
+}
+.boite_info h2
+{
+	background-color:#AAAAAA;
+	margin:0px;
+	padding:5px;
+}
+.boite_info .contenu_info
+{
+	margin:10px;
 }

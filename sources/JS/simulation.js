@@ -9,8 +9,11 @@ resout = function()
 	//On crée les matrices
 	systeme = prepareSysteme();
 	
+
+	
 	//On résout
 	solution = math.usolve(systeme.K,systeme.F)
+	
 	
 	//On déplace les pièces
 	for(i=0;i<schema.nbClasses();i++)

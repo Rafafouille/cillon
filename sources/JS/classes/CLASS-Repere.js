@@ -89,6 +89,12 @@ var Repere = function(__point__,__arg2__)
 			return this._couleur;
 		}
 
+		//Renvoie la classe d'équivalence dans lequel il fait partie
+		this.getClasse=function()
+		{
+			return this.parent.getClasse();
+		}
+		
 	//==========================
 	//Autres fonctions membres
 	//==========================

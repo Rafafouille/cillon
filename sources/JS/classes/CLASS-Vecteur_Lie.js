@@ -28,10 +28,10 @@ var Vecteur_Lie = function(__arg1__,__vecteur__)
 		}
 		
 	
-		this._point=__point__;		//{x,y}
-		this._vecteur=__vecteur__;	//de type vecteur
-		this._couleur="black";
-		this._rayonClicable=20;	//En pixel
+		this._point = __point__;		//{x,y}
+		this._vecteur = __vecteur__;	//de type vecteur
+		this._couleur = "black";
+		this._rayonClicable = 20;	//En pixel
 
 	//==========================
 	//getter/setter
@@ -111,8 +111,8 @@ var Vecteur_Lie = function(__arg1__,__vecteur__)
 		this._axe=new createjs.Shape();
 		this._axe.graphics.beginStroke(this._couleur)
 			.setStrokeDash([15,5,5,5])
-			.moveTo(this._bipoint.X1()-this._vecteur.DX()*10,this._bipoint.Y1()-this._vecteur.DY()*10)
-			.lineTo(this._bipoint.X2()+this._vecteur.DX()*10,this._bipoint.Y2()+this._vecteur.DY()*10);
+			.moveTo(this._bipoint.X1()-this._vecteur.DX()*100,this._bipoint.Y1()-this._vecteur.DY()*100)
+			.lineTo(this._bipoint.X2()+this._vecteur.DX()*100,this._bipoint.Y2()+this._vecteur.DY()*100);
 		this._axe.alpha=0.2;
 		this.addChild(this._axe);
 		

@@ -40,12 +40,16 @@
 				if(ACTION == "DESSIN" && SOUS_ACTION == "DESSINE")
 				{
 					SOUS_ACTION = "ATTENTE_DEMARRAGE";
-					
 					var classe = getClasseSelectionnee();
-					
 					classe.dessineLigne(schema.brouillon.coords,classe);
-					
 					schema.removeChild(schema.brouillon);
+				}
+				if(ACTION == "MANIP"  && SOUS_ACTION == "TIRE")
+				{
+					SOUS_ACTION = "PREPARE";
+					var classe = schema.classes[CLASSE];
+					classe.accroche.autoSupprime();
+					suiveur.addChild(new AccrocheFlottante());
 				}
 			});
 			

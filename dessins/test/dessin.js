@@ -1,5 +1,3 @@
-<script>
-
 //On crée les classe d'équivalence
 C0=new Classe_Equivalence();
 C1=new Classe_Equivalence();
@@ -26,10 +24,12 @@ schema.ajouteClasse(C3);
 	
 
 //dessin
-C1.dessineLigne(30,0,-30,-100);
-C2.dessineLigne(-20,50,120,-50);
-C3.dessineLigne(-30,100,30,-100);
+C1.dessineLigne(30,0,-30,-100,false);
+C2.dessineLigne(-20,50,120,-50,false);
+C3.dessineLigne(-30,100,30,-100,false);
 
+//Point
+C2.schema.addChild(new Point(-100,100));
 
 //Liaisons
 LIAISON1 = ajouteLiaison(0,1,"pivot",{x:0,y:0})
@@ -42,4 +42,3 @@ LIAISON3 = ajouteLiaison(2,3,"pivot",{x:200,y:-200})
 LIAISON4 = ajouteLiaison(3,0,"pivot",{x:200,y:0})
 
 schema.sauvePositions();	//On sauvegarde les positions initiales
-</script>

@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: fonctions.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: fonctions.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 
 // =====================================================================
 /**
@@ -12,15 +40,15 @@ update_liste_CE1=function()
 	//On vide
 	$("#select_CE1").empty();
 	//On remet...
-	for(var i=0; i<schema.classes.length; i++)
+	for(var i=0; i&lt;schema.classes.length; i++)
 	{
 		classe=schema.classes[i];
 		if(!$("#select_CE2 option[value='"+classe.numero()+"']").is(':selected'))//...si c'est pas déjà dans l'autre
 		{
-			var ajout="<option value=\""+classe.numero()+"\"";
+			var ajout="&lt;option value=\""+classe.numero()+"\"";
 			if(classe.numero()==old)
 				ajout+=" selected=\"selected\"";
-			ajout+=">"+classe.nom()+"</option>";
+			ajout+=">"+classe.nom()+"&lt;/option>";
 			$("#select_CE1").append(ajout);
 		}
 	}
@@ -40,15 +68,15 @@ update_liste_CE2=function()
 	//On vide
 	$("#select_CE2").empty();
 	//On remet...
-	for(var i=0 ; i< schema.classes.length; i++)
+	for(var i=0 ; i&lt; schema.classes.length; i++)
 	{
 		classe=schema.classes[i];
 		if(!$("#select_CE1 option[value='"+classe.numero()+"']").is(':selected'))
 		{
-			var ajout="<option value=\""+classe.numero()+"\"";
+			var ajout="&lt;option value=\""+classe.numero()+"\"";
 			if(classe.numero()==old)
 				ajout+=" selected=\"selected\"";
-			ajout+=">"+classe.nom()+"</option>";
+			ajout+=">"+classe.nom()+"&lt;/option>";
 			$("#select_CE2").append(ajout);
 		}
 	}
@@ -65,10 +93,10 @@ update_liste_CE = function()
 {
 	//On vide
 	$("#select_CE").empty();
-	for(var i=0 ; i< schema.classes.length; i++)
+	for(var i=0 ; i&lt; schema.classes.length; i++)
 	{
 		var classe=schema.classes[i];
-		var ajout="<option value=\""+classe.numero()+"\">"+classe.nom()+"</option>";
+		var ajout="&lt;option value=\""+classe.numero()+"\">"+classe.nom()+"&lt;/option>";
 		$("#select_CE").append(ajout);
 	}
 }
@@ -81,7 +109,7 @@ update_liste_CE = function()
 /**
  * Fonction qui renvoie une référence vers la classe d'équivalence n°i (stoquée dans schema.classe).
  * @param {int} i - Numéro de la classe d'équivalence
- * @return {Classe_Equivalence} Référence vers un objet <Classe_Equivalence>.
+ * @return {Classe_Equivalence} Référence vers un objet &lt;Classe_Equivalence>.
 */
 getClasse = function(i)
 {
@@ -119,7 +147,7 @@ videSuiveur = function()
 // (utile à la fin d'une action, ou pour annuler une action courrante)
 resetActions = function()
 {
-	if(ACTION == "MANIP" && SOUS_ACTION == "TIRE")
+	if(ACTION == "MANIP" &amp;&amp; SOUS_ACTION == "TIRE")
 	{
 		schema.classes[CLASSE].accroche.autoSupprime();
 	}
@@ -255,23 +283,23 @@ updateConsoleMiseEnForme = function()
 console2HTML = function(texte)
 {
 	// Retour à la ligne
-	texte = (texte + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + "<br />" + '$2');
+	texte = (texte + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + "&lt;br />" + '$2');
 	
 	//Commentaires
-	texte = texte.replace(/\/\/(.*)/g,'<span class=\"code_commentaire\">//$1</span>');
+	texte = texte.replace(/\/\/(.*)/g,'&lt;span class=\"code_commentaire\">//$1&lt;/span>');
 	
 	//commande blanches
-	texte = texte.replace(/(new )/g,'<span class=\"code_blanc\">$1</span>');
+	texte = texte.replace(/(new )/g,'&lt;span class=\"code_blanc\">$1&lt;/span>');
 	
 	//commande fonctions de cillon
-	texte = texte.replace(/(Classe_Equivalence|ajouteLiaison|ajouteImage)\((.*)\)/g,'<span class="code_fonction_cillon"\>$1(</span>$2<span class="code_fonction_cillon">)</span>');
+	texte = texte.replace(/(Classe_Equivalence|ajouteLiaison|ajouteImage)\((.*)\)/g,'&lt;span class="code_fonction_cillon"\>$1(&lt;/span>$2&lt;span class="code_fonction_cillon">)&lt;/span>');
 	
 	//commande méthodes de cillon
-	texte = texte.replace(/\.(bloque|couleur|dessineLigne|ajouteClasse|pilotee)\((.*)\)/g,'.<span class="code_methode_cillon"\>$1(</span>$2<span class="code_methode_cillon">)</span>');
+	texte = texte.replace(/\.(bloque|couleur|dessineLigne|ajouteClasse|pilotee)\((.*)\)/g,'.&lt;span class="code_methode_cillon"\>$1(&lt;/span>$2&lt;span class="code_methode_cillon">)&lt;/span>');
 		
 	//commande méthodes str
-	//texte = texte.replace(/\"(.*)\"/,'.<span class="code_str"\>\"$1\"</span>');
-	//texte = texte.replace(/\'(.*)\'/g,'.<span class="code_str"\>\'$1\'</span>');
+	//texte = texte.replace(/\"(.*)\"/,'.&lt;span class="code_str"\>\"$1\"&lt;/span>');
+	//texte = texte.replace(/\'(.*)\'/g,'.&lt;span class="code_str"\>\'$1\'&lt;/span>');
 		
 		
 	return texte;
@@ -356,16 +384,35 @@ convertePosition = function(_pos_init, _contexte_final=SCHEMA, _uniteSI=false)
 	if(typeof(_pos_init.uniteSI) == 'undefined')
 		_pos_init.uniteSI = false ;
 		
-	var angle_init = _pos_init.theta * (1-1*_pos_init.uniteSI-_pos_init.uniteSI*1/(Math.PI)*180)
-		
 	var unite_source = 1 + _pos_init.uniteSI*(-1) + _pos_init.uniteSI * SCHEMA.unite() ;
 	var unite_destination = 1 + _uniteSI*(-1) + _uniteSI * SCHEMA.unite() ;
-	var sens_y_source = 1-2*_pos_init.uniteSI
-	var sens_y_destination = 1-2*_uniteSI
+		
+	var new_coord = _pos_init.contexte.localToLocal(_pos_init.x*unite_source ,_pos_init.y*unite_source ,_contexte_final) ; // Conversion en coordonnées px
 	
-	var new_coord = _pos_init.contexte.localToLocal(_pos_init.x*unite_source ,_pos_init.y*unite_source*sens_y_source ,_contexte_final) ; // Conversion en coordonnées px
+	var newRotation = getLocalToLocalRotation(_pos_init.contexte,_contexte_final);
 	
-	var newRotation = (angle_init+getLocalToLocalRotation(_pos_init.contexte,_contexte_final))*(1-1*_uniteSI-_uniteSI*Math.PI/180) ;
-	
-	return {x:new_coord.x/unite_destination, y:new_coord.y/unite_destination*sens_y_destination, theta:newRotation, contexte:_contexte_final, uniteSI: _uniteSI} ;
+	return {x:new_coord.x/unite_destination, y:new_coord.y/unite_destination, theta:newRotation, contexte:_contexte_final, uniteSI: _uniteSI} ;
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Classe_Equivalence.html">Classe_Equivalence</a></li><li><a href="Schema.html">Schema</a></li></ul><h3>Global</h3><ul><li><a href="global.html#convertePosition">convertePosition</a></li><li><a href="global.html#ecraseOptions">ecraseOptions</a></li><li><a href="global.html#ferme_menus">ferme_menus</a></li><li><a href="global.html#getClasse">getClasse</a></li><li><a href="global.html#getGlobalRotation">getGlobalRotation</a></li><li><a href="global.html#getLocalToLocalRotation">getLocalToLocalRotation</a></li><li><a href="global.html#SCHEMA">SCHEMA</a></li><li><a href="global.html#update_liste_CE">update_liste_CE</a></li><li><a href="global.html#update_liste_CE1">update_liste_CE1</a></li><li><a href="global.html#update_liste_CE2">update_liste_CE2</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Dec 04 2021 10:23:12 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

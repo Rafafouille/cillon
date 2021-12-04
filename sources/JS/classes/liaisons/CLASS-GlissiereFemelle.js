@@ -1,6 +1,6 @@
-//Pivot animée, en attendant d'être placée
 
-var PivotMale = function()
+
+var GlissiereFemelle = function()
 {
 	//==========================
 	//Constructeur issu de l'heritage
@@ -14,10 +14,11 @@ var PivotMale = function()
 	//==========================
 	
 		//Définition
-		this._genre = "male";	//Permet de discriminer la liaison "male" et la liaison "femelle"
+		this._genre = "femelle";	//Permet de discriminer la liaison "male" et la liaison "femelle"
 		
 		//Caractéristiques géométriques de la liaison
-		this._rayon=10;
+		this._longueur=50; // Longueur du rectangle
+		this._largeur=20; // Largeur du rectangle
 		this._longueurTige=20;
 		
 
@@ -26,18 +27,29 @@ var PivotMale = function()
 	//getter/setter
 	//==========================
 
-		// Rayon du cercle
-		this.rayon=function(r)
+		// Longueur du rectangle
+		this.longueur=function(l)
 		{
-			if(typeof(r)!='undefined')
+			if(typeof(l)!='undefined')
 				{
-					this._rayon=r;
+					this._longueur=l;
 					//Met à jour les couleur directement sur les graphismes
 					// ... à faire
 				}
-			return this._rayon;
+			return this._longueur;
 		}
 		
+		// Largeur du rectangle
+		this.lageur=function(l)
+		{
+			if(typeof(l)!='undefined')
+				{
+					this._largeur=l;
+					//Met à jour les couleur directement sur les graphismes
+					// ... à faire
+				}
+			return this._largeur;
+		}
 		//Longueur tige
 		this.longueurTige=function(l)
 		{
@@ -58,8 +70,8 @@ var PivotMale = function()
 		//Fonction qui met à jour la couleur des graphismes de la liaison (appelée avec this.couleur() en setter)
 		this.updateCouleurGraphismes = function(_coul)
 		{
-			this._cercle.graphics._stroke.style=_coul;
-			this._tige.graphics._stroke.style=_coul;
+			this.children[0].graphics._stroke.style = _coul;
+			this.children[1].graphics._stroke.style = _coul;
 		}
 
 		//ECRASE L'ANCIENNE
@@ -78,20 +90,27 @@ var PivotMale = function()
 			var O2L2 = this.demiSoeur().O1L1();
 			var L1L2 = this.L1L2();
 			var k = this._k
+			var kRot = this._kRot;
 			var n1 = this.classe().numero(); //Numéro de la CE
 			var n2 = this.demiSoeur().classe().numero() // Numéro de la CE de la demi-Soeur
-		
+			var alpha1 = this.getAbsoluteRotation(); // En degrés
+			var alpha2 = (this.demiSoeur().getAbsoluteRotation()); // Orientation de la direction de la demi-soeur (absolu)
+			var sina2 = Math.sin(alpha2*Math.PI/180);
+			var cosa2 =  Math.cos(alpha2*Math.PI/180);
+			var B = O1L1.x*cosa2 + O1L1.y*sina2;
+			var C = O1L1.x*sina2 + O1L1.y*cosa2;
+			var D = L1L2.x*sina2 + L1L2.y*cosa2;
+			
 		
 			//NOTE : il faudra peut être condenser les lignes suivantes
 					
-			var KK = [	[-k,		0,		k*O1L1.y,								k,		0,		-k*O2L2.y],
-					[0,		-k,		-k*O1L1.x,								0,		k,		k*O2L2.x],
-					[O1L1.y*k,	-O1L1.x*k,	-k*(O1L1.y*O1L1.y+O1L1.x*O1L1.x+O1L1.y*L1L2.y+O1L1.x*L1L2.x),	-O1L1.y*k,	O1L1.x*k,	k*(O1L1.y*O2L2.y+O1L1.x*O2L2.x)]	
+			var KK = [	[-k*sina2*sina2,		k*sina2*cosa2,	k*sina2*(O1L1.y*sina2+O1L1.x*cosa2),	k*sina2*sina2,	-k*sina2*cosa2,	-k*sina2*(O2L2.y*sina2+O2L2.x*cosa2)	],
+					[k*cosa2*sina2,		-k*cosa2*cosa2,	-k*cosa2*(O1L1.y*sina2+O1L1.x*cosa2),	-k*cosa2*sina2,	k*cosa2*cosa2,	k*cosa2*(O2L2.y*sina2+O2L2.x*cosa2)	],
+					[k*B*sina2 - kRot,	-k*B*cosa2,	-k*(B*B+C*D),	-k*B*sina2+kRot,	k*B*cosa2,	k*B*(O2L2.y*sina2+O2L2.x*cosa2)	]	
 					]
-					//[O1L1.y*k,	-O1L1.x*k,	-k*(O1L1.y*O1L1.y+O1L1.x*O1L1.x),	-O1L1.y*k,	O1L1.x*k,	k*(O1L1.y*O2L2.y+O1L1.x*O2L2.x)]	] //Ancien
 					
 			//var FF = [k*L1L2.x,k*L1L2.y,k*(O1L1.x*L1L2.y-O1L1.y*L1L2.x)]
-			var FF = [-k*L1L2.x,	-k*L1L2.y,	k*(O1L1.y*L1L2.x-O1L1.x*L1L2.y)]
+			var FF = [k*sina2*(-L1L2.x*sina2+L1L2.y*cosa2),	-k*cosa2*(-L1L2.x*sina2+L1L2.y*cosa2),	-k*B*(-L1L2.x*sina2+L1L2.y*cosa2)-kRot*(alpha2-alpha1)]
 			
 
 			
@@ -118,14 +137,7 @@ var PivotMale = function()
 			if(this._pilotee && ACTION == "simule")
 			{
 			
-				var k = this._kRot //Raideur en rotation
-				var signe = 1-2*(this._genre=="male")
-				var deltaTheta0 = this.classe().lastPosition().theta-this.demiSoeur().classe().lastPosition().theta;	//Ecart initial
-				var deltaTheta = this.classe().rotation-this.demiSoeur().classe().rotation;	//Ecart actuel
-				K.ajouteVal(3*n1+2, 3*n1+2, -k)
-				K.ajouteVal(3*n2+2, 3*n2+2, k)
-
-				F.ajouteVal(3*n1+2, k*(deltaTheta-deltaTheta0+signe*this.consigneAngulaire()));//+k*)
+				// A faire
 			}
 			
 			return {K:KK,F:FF}
@@ -135,8 +147,6 @@ var PivotMale = function()
 		this.consigneAngulaire=function()
 		{
 			var t=schema.tSimulation();
-			return -t*20;
-			
 			var omega = 2*math.pi*0.1 //vitesse angulaire
 			return math.sin(omega*t)*90
 		}
@@ -146,23 +156,23 @@ var PivotMale = function()
 	//Graphismes
 	//==========================
 	
-		this._cercle=new createjs.Shape();
-		this._cercle.graphics.setStrokeStyle(this._epaisseur).beginStroke(this._couleur).beginFill("white").drawCircle(0, 0, this._rayon);
-		this.addChild(this._cercle);
-		
+		this._rectangle=new createjs.Shape();
+		this._rectangle.graphics.setStrokeStyle(this._epaisseur).beginStroke(this._couleur).drawRect(-this._longueur/2,-this._largeur/2.,this._longueur,this._largeur);
+		this.addChild(this._rectangle);
+
 		this._tige=new createjs.Shape();
-		this._tige.graphics.setStrokeStyle(this._epaisseur).beginStroke(this._couleur).moveTo(this._rayon,0).lineTo(this._rayon+this._longueurTige,0);
+		this._tige.graphics.setStrokeStyle(this._epaisseur).beginStroke(this._couleur).moveTo(0,this._largeur/2).lineTo(0,this._largeur/2+this._longueurTige);
 		this.addChild(this._tige);
 
 
 		//Les shapes n'ont pas de bornes. Alors on va en créer
 		
-		this.setBounds(-this._rayon-this._longueurTige,-this._rayon-this._longueurTige,2*(this._rayon+this._longueurTige),2*(this._rayon+this._longueurTige))
+		this.setBounds(-this._longueur/2.,this._epaisseur/2.,this._longueur/2.,-this._epaisseur/2.)
 
 
 }
-PivotMale.prototype = Object.create(DemiLiaison.prototype);//On recopie le prototype de DemiLiaison
-PivotMale.prototype.constructor = PivotMale;//On recopie le constructeur de Noeud dans son prototype
+GlissiereFemelle.prototype = Object.create(DemiLiaison.prototype);//On recopie le prototype de DemiLiaison
+GlissiereFemelle.prototype.constructor = GlissiereFemelle;//On recopie le constructeur de Noeud dans son prototype
 
 
 

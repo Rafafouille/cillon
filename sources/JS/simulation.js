@@ -10,6 +10,7 @@ resout = function()
 	systeme = prepareSysteme();
 	
 
+	//console.log(math.det(systeme.K))
 	
 	//On résout
 	solution = math.usolve(systeme.K,systeme.F)
@@ -22,7 +23,6 @@ resout = function()
 		schema.classes[i].x += solution.get([3*i,0])
 		schema.classes[i].y += solution.get([3*i+1,0])
 		schema.classes[i].rotation += solution.get([3*i+2,0])*180/math.pi
-//		console.log("Classe n0"+i+" : ( "+solution.get([3*i,0])+" , "+solution.get([3*i+1,0])+" , "+solution.get([3*i+2,0])*180/math.pi+" )")
 	}
 }
 

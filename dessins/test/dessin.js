@@ -21,24 +21,48 @@ schema.ajouteClasse(C1);
 schema.ajouteClasse(C2);
 schema.ajouteClasse(C3);
 	
+
+//Coordonnées
+posA = {x:0,y:0} // Position par rapport au schéma, avec les unités du dessin (y vers le haut)
+posB = {x:0,y:2.5,uniteSI:true}
+posC = {x:5,y:5,uniteSI:true}
+posD = {x:5,y:0,uniteSI:true}
 	
 
 //dessin
-C1.dessineLigne(30,0,-30,-100,false);
-C2.dessineLigne(-20,50,120,-50,false);
-C3.dessineLigne(-30,100,30,-100,false);
+C1.dessineLigne(posA,posB);
+C2.dessineLigne(posB,posC);
+C3.dessineLigne(posC,posD);
 
-//Point
-C2.schema.addChild(new Point(-100,100));
+
+
+//Points
+A = new Point("A");
+B = new Point("B");
+C = new Point("C");
+D = new Point("D");
+
+C0.ajoutePoint(A,posA);
+C2.ajoutePoint(B,posB);
+C3.ajoutePoint(C,posC);
+C0.ajoutePoint(D,posD);
 
 //Liaisons
-LIAISON1 = ajouteLiaison(0,1,"pivot",{x:0,y:0})
+LIAISON1 = ajouteLiaison(0,1,"pivot",posA)
 LIAISON1.L1.pilotee(true); // OU L2, c'est pareil
+omega = 0.1*2*Math.PI
+LIAISON1.L1.consignesCinematiques(1,"omega*t")
 LIAISON1.L1.rotation=90
-LIAISON2 = ajouteLiaison(1,2,"pivot",{x:0,y:-100})
+LIAISON2 = ajouteLiaison(1,2,"pivot",posB)
+LIAISON2.L1.rotation=90;
+LIAISON2.L2.rotation=-Math.atan((posC.y-posB.y)/(posC.x-posB.x))*180/Math.PI;
 //LIAISON2.L1.pilotee(true);
-LIAISON3 = ajouteLiaison(2,3,"pivot",{x:200,y:-200})
+LIAISON3 = ajouteLiaison(2,3,"pivot",posC)
+LIAISON3.L1.rotation=LIAISON2.L2.rotation-180;
+LIAISON3.L2.rotation=90;
 //LIAISON3.L1.pilotee(true);
-LIAISON4 = ajouteLiaison(3,0,"pivot",{x:200,y:0})
+LIAISON4 = ajouteLiaison(3,0,"pivot",posD)
+LIAISON4.L1.rotation=-90;
+LIAISON4.L2.rotation=90;
 
 schema.sauvePositions();	//On sauvegarde les positions initiales

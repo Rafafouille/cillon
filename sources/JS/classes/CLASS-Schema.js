@@ -267,28 +267,30 @@ class Schema extends createjs.Container
 	//Variables Membres
 	//==========================
 	
-		/** Nombre de pixels qui définit l'unité de longueur (lorsqu'on a un zoom de 100%)
-		@type {Array}  */
-		_unite = 40 ;	// Nombre de pixels qui définit l'unité de longueur (lorsqu'on a un zoom de 100%)
+			/** Nombre de pixels qui définit l'unité de longueur (lorsqu'on a un zoom de 100%)
+			@type {Array}  */
+		_unite = 40 ;
 
 		
-		/** Liste des classes d'équivalence présentes sur le dessin
-		@type {Array}  */
+			/** Liste des classes d'équivalence présentes sur le dessin
+			@type {Array}  */
 		classes = [] ;
 		
-		/** Coordonnées de la souris
-		@type {coordonnees}
-		*/
+			/** Coordonnées de la souris
+			@type {coordonnees} */
 		_souris={x:0,y:0};
 		
 		
 //		this._t0=0;	//Temps initiale du début de la simulation
 
 
-		/** Temps écoulé depuis le début de la simulation (pauses incluses). Unité = ???? milliseconde ????
-		@type {Number}  */
+			/** Temps écoulé depuis le début de la simulation (pauses incluses). Unité = ???? milliseconde ????
+			@type {Number}  */
 		_tSimulation = 0;	//
-
+		
+			/** Liste des points présents dans la classe d'équivalence
+			@type {Array} */
+		_listePoints = [];
 		
 	//==========================
 	//getter/setter
@@ -523,12 +525,20 @@ class Schema extends createjs.Container
 			*/
 		reset()
 		{
-			this.classes=[];
 			for(var i=0;i<this.classes.length;i++)
 			{
 				var c = this.classes[i]
 				this.removeChild(c);
 			}
+			this.classes=[];
+		}
+		
+			/** Fonction qui met à jour les enfants */
+		MAJ()
+		{
+			this.classes.forEach(function(C){
+				C.MAJ();
+			});
 		}
 		
 	//==========================
@@ -568,6 +578,7 @@ class Schema extends createjs.Container
 				for(var i=0;i<PRECISION;i++)
 					resout();
 				schema.pushHistoriques(schema._tSimulation)
+				SCHEMA.MAJ(); // Met à jours les enfants
 			}
 		}
 

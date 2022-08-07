@@ -522,20 +522,25 @@ class Classe_Equivalence extends createjs.Container
 {
 
 	// **********************************************************
-	/*
+	/**
 	 * Constructeur
+	 * @param {Object} _opt - [FACULTATIF] Options de création de la classe d'équivalence. L'objet complet est de la forme : {pos:..., couleur:..., bloque:...}, mais seuls les informations strictement nécessaires peuvent être renseignées. pos est de type {@link Position} (par défaut : l'origine de {@link SCHEMA}) ; couleur est STRING ; bloque est un booléen (si la pièce est bloquée, référentiel, etc.)
 	 */
 	constructor(_opt)
 	{
 		super()	// Rappelle le constructeur parent
 		
 		// PARAMETRES
-		
-			var options = { pos: {x:0,y:0,theta:0} , couleur:"#000000", bloque:false } ;	//Paramètres par défaut
+			var options = { pos: {x:0,y:0,theta:0,contexte:SCHEMA} , couleur:"#000000", bloque:false } ;	//Paramètres par défaut
 			ecraseOptions(options,_opt) ;	// Mise à jour des paramètres en fonction de ce que l'utilisateur passe
 			
-			convertePosition(options.pos);	// Converti la position
+			var position = convertPosition(options.pos,SCHEMA,false);	// Converti la position (px, par rapport à SCHEMA)
 			
+			this.x = position.x ;
+			this.y = position.y ;
+			this.rotation = position.theta ;
+			this.couleur(options.couleur) ;
+			this.bloque(options.bloque) ;
 			
 			this.cursor="pointer"; // Pour le CSS de la
 			
@@ -566,8 +571,8 @@ class Classe_Equivalence extends createjs.Container
 						CLASSE = classe.numero()
 						videSuiveur();
 						classe.accroche = new Accroche();
-						classe.ajouteDemiLiaison(classe.accroche,schema.globalToLocal(event.stageX,event.stageY))
-						classe.recentreOrigine();
+						classe.ajouteDemiLiaison(classe.accroche,{x:event.stageX,y:event.stageY,contexte:SCHEMA.parent,uniteSI:false});//schema.globalToLocal(event.stageX,event.stageY))
+						//classe.recentreOrigine();
 						
 						
 						SOUS_ACTION = "TIRE";
@@ -615,6 +620,10 @@ class Classe_Equivalence extends createjs.Container
 			@type {Number}  */
 		_longueurHistorique = 5 ; //Nombre de position qu'on garde
 		
+			/** Liste des points présents dans la classe d'équivalence
+			@type {Array} */
+		_listePoints = [];
+		
 		//Paramètres fournis en argument du constructeur
 		
 	//==========================
@@ -653,7 +662,7 @@ class Classe_Equivalence extends createjs.Container
 		}
 		
 			/** GETTER/SETTER - Renvoie le numéro de la classe d'équivalence, stocké dans schema.classes
-			@param {String} n - (FACULTATIF) nom de la classe à stocker.
+			@param {String} [n] - Nom de la classe à stocker.
 			@return {String} Nom de la classe d'équivalence. Si chaîne vide, renvoie "Classe n°i" où i est le numéro de la classe.
 			*/
 		nom(n)
@@ -666,7 +675,7 @@ class Classe_Equivalence extends createjs.Container
 		}
 		
 			/** GETTER/SETTER - Couleur de la classe d'équivalence. Si modifiée, elle affecte les objets graphique enfants (lignes, cercles, liaisons, etc.) qui possède une méthode couleur() similaire
-			@param {String} c - (FACULTATIF) Couleur à stocker.
+			@param {String} [c] - Couleur à stocker.
 			@return {String} Couleur de la classe d'équivalence
 			*/
 		couleur(c)
@@ -697,7 +706,7 @@ class Classe_Equivalence extends createjs.Container
 		}
 		
 			/** GETTER/SETTER - Coordonnées de la classe d'équivalence, dans les coordonnées locales (voir la classe schema)
-			@param {Position} c - (FACULTATIF) Position de la classe, de la forme {x:,y:,theta:} (en unité local et en radian dans le sens trigo)
+			@param {Position} [c] - Position de la classe, de la forme {x:,y:,theta:} (en unité local et en radian dans le sens trigo)
 			@return {Position} Position de la classe, de la forme {x:,y:,theta:} (en unité local et en radian dans le sens trigo)
 			*/
 		COORD(c)
@@ -712,7 +721,7 @@ class Classe_Equivalence extends createjs.Container
 		}
 		
 			/** GETTER/SETTER - Coordonnée sur X de la classe d'équivalence, dans les coordonnées locales (voir la classe schema)
-			@param {Number} posX - (FACULTATIF) Coordonnées sur X en unité local.
+			@param {Number} [posX] - Coordonnées sur X en unité local.
 			@return {Number} Coordonnées sur X en unité local.
 			*/
 		X(posX)
@@ -723,7 +732,7 @@ class Classe_Equivalence extends createjs.Container
 		}
 		
 			/** GETTER/SETTER - Coordonnée sur Y de la classe d'équivalence, dans les coordonnées locales (voir la classe schema)
-			@param {Number} posY - (FACULTATIF) Coordonnées sur Y en unité local (positif vers le haut).
+			@param {Number} [posY] - Coordonnées sur Y en unité local (positif vers le haut).
 			@return {Number} Coordonnées sur Y en unité local (positif vers le haut).
 			*/
 		Y(posY)
@@ -734,7 +743,7 @@ class Classe_Equivalence extends createjs.Container
 		}
 		
 			/** GETTER/SETTER - Angle de rotation (en radian, dans le sens trigo)
-			@param {Number} t - (FACULTATIF) Angle de rotation (en radian, dans le sens trigo)
+			@param {Number} [t] - Angle de rotation (en radian, dans le sens trigo)
 			@return {Number} Angle de rotation (en radian, dans le sens trigo)
 			*/
 		THETA(t)
@@ -755,7 +764,7 @@ class Classe_Equivalence extends createjs.Container
 		}
 		
 			/** GETTER/SETTER - Permet de bloquer la pièce par rapport à la scène (=bâti). Si true, les coordonnées de la classe d'équivalence ne sont pas modifiées durant la simulation
-			@param {Boolean} b - 'true' si la classe est bloquée. 'false' sinon.
+			@param {Boolean} [b] - 'true' si la classe est bloquée. 'false' sinon.
 			@return {Boolean} 'true' si la classe est bloquée. 'false' sinon.
 			*/
 		bloque(b)
@@ -782,7 +791,7 @@ class Classe_Equivalence extends createjs.Container
 		}
 		
 			/** GETTER/SETTER du nombre de derniers points que l'on enregistre.
-			@param {Number} l - nombre de derniers points que l'on enregistre.
+			@param {Number} [l] - nombre de derniers points que l'on enregistre.
 			@return {Number} nombre de derniers points que l'on enregistre.
 			*/
 		longueurHistorique(l)
@@ -795,7 +804,7 @@ class Classe_Equivalence extends createjs.Container
 			/** Renvoie la i-ème position en partant de la plus récente vers la plus vieille.
 			 * Si i absent : renvoie tout le vecteur.
 			 * i = 1 pour la position la plus récente
-			@param {Number} i - Numéro de la position que l'on souhaite récupérer
+			@param {Number} [i=0] - Numéro de la position que l'on souhaite récupérer
 			@return {Position}
 			*/
 		historique(i)
@@ -865,20 +874,20 @@ class Classe_Equivalence extends createjs.Container
 	
 			/** Fonction qui ajoute une demi-liaison
 			@param {DemiLiaison} _demiLiaison - Référence vers l'objet "demi-liaison"
-			@param {Point} _center - Position de la demi-liaison DANS LA BASE DU SCHEMA !
+			@param {Position} _center - Position de la demi-liaison.
 			*/
 		ajouteDemiLiaison(_demiLiaison,_centre)
 		{
 			//Ajout graphique
 			this.schema.addChild(_demiLiaison);
 			_demiLiaison.classe(this);	//On ajoute la ref vers la classe
-			var position = schema.localToLocal(_centre.x,_centre.y,this);
+			var position = convertPosition(_centre,this,false); //schema.localToLocal(_centre.x,_centre.y,this);
 			_demiLiaison.x=position.x;
 			_demiLiaison.y=position.y;
 			
 			//Ajout dans la liste de liaisons
 			this.liste_liaisons.push(_demiLiaison);
-			this.recentreOrigine();
+			//this.recentreOrigine();
 		}
 		
 			/** Fonction qui supprime la demi-liaison (si elle existe)
@@ -889,7 +898,6 @@ class Classe_Equivalence extends createjs.Container
 			var index = this.liste_liaisons.indexOf(_demiLiaison); //Trouve l'objet dans la liste des liaison
 			if (index > -1)
 			{
-				console.log("supprime")
 				//Supprime la demi-liaison
 				this.liste_liaisons.splice(index, 1);//On la vire de la liste
 				this.schema.removeChild(_demiLiaison);	//On la vire du container
@@ -1100,15 +1108,32 @@ class Classe_Equivalence extends createjs.Container
 			}
 		}
 		
-			/** Fonction qui dessine une ligne, (enregistre ses bornes) et l'ajoute à la classe
+		
+			/** Cette méthode calcule les coordonnées d'une position _pos, dans le repère local de la classe d'équivalence (équivalent à convertPosition(), mais à destination de cette classe.)
+				@param {Point} _pos - Position dont on souhaite connaître les coordonnées locale
+				@param {Boolean} [_direct=false] - true : les coordonnées seront données dans le repère direct du schéma (x vers la droite, y vers le haut), le tout à l'échelle de SCHEMA.echelle(). false : les coordonnées sont celles propre à createjs (y vers le bas, et unité en pixel)
+				@return {Object} Coordonnées du type {x:, y:, theta:, contexte: this, _uniteSI: }
+			*/
+		getLocalPosition(_pos,_USI=false)
+		{
+			return convertPosition(_pos,this,_USI)
+		}
+		
+		
+		
+		
+		
+		
+			/* Fonction qui dessine une ligne, (enregistre ses bornes) et l'ajoute à la classe
 			@param {Number} a - Coordonnées sur x du point 1
 			@param {Number} b - Coordonnées sur y du point 1
 			@param {Number} c - Coordonnées sur x du point 2
 			@param {Number} d - Coordonnées sur y du point 2
 			@param {Boolean} repereDirect - si repereDirect =true : Y est vers le haut. Si false : Y est vers le bas. IL FAUDRAIT REMPLACER PAR L'UTILISATION DES COORDONNEES A L'ECHELLE (voir la classe {@link Schema})
-			@return {Ligne} Référence vers la ligne nouvellement créée.
+			@return Référence vers la ligne nouvellement créée.
+			@deprecated Replacé par dessineSegment (plus partique)
 			*/
-		dessineLigne(a,b,c,d,repereDirect = true)
+		/*dessineLigne(a,b,c,d,repereDirect = true)
 		{
 			if(repereDirect)
 				var ligne = new Ligne(a,-b,c,-d);
@@ -1118,7 +1143,28 @@ class Classe_Equivalence extends createjs.Container
 			this.schema.addChild(ligne)
 			
 			return ligne
+		}*/
+		
+		
+		
+		
+		
+		/** Fonction qui dessine un segment sur la classe d'équivalence
+			@param {Position} _P1 - Position du point extrémité 1
+			@param {Position} _P2 - Position du point extrémité 2
+			@return {createjs.displayObject} Référence vers la ligne (dessin) nouvellement créée.
+			*/
+		dessineLigne(_P1,_P2)
+		{
+			_P1=convertPosition(_P1,this,false) ;
+			_P2=convertPosition(_P2,this,false) ;
+			var ligne = new Ligne(_P1.x,_P1.y,_P2.x,_P2.y);
+			ligne.couleur(this._couleur);
+			this.schema.addChild(ligne)
+			return ligne
 		}
+		
+		
 		
 			/** Fonction qui ajoute une image à la classe d'équivalence
 			@param {String} _image - Adresse de l'image à insérer
@@ -1136,4 +1182,44 @@ class Classe_Equivalence extends createjs.Container
 			img.rotation=_rot;
 			img.scaleX=img.scaleY=_scale;
 		}	
+		
+		
+			/** Fonction qui modifie la position de la classe d'équivalence. Cela revient à modifier les membres x, y ou rotation,
+			 * mais en prenant en compte les éventuels effets d'échelle.
+			 * @param {Position} pos - Position à prendre.
+			 */
+		changePosition(pos)
+		{
+			var position = convertPosition(pos,SCHEMA,false);	// Converti la position (px, par rapport à SCHEMA)
+		
+			this.x = position.x ;
+			this.y = position.y ;
+			this.rotation = position.theta ;
+		}
+		
+			/** Ajoute un point à la classe d'équivalence, en le "préparant" (mettre la bonne couleur, redresse le texte pour qu'il apparaisse droit, etc.)
+			 * @param {Point} _P - Objet 'point' à placer.
+			 * @param {Position} _pos - Position du point
+			 */
+		ajoutePoint(_P, _pos)
+		{
+			// Ajout
+			this.annotations.addChild(_P);
+			this._listePoints.push(_P);
+			SCHEMA._listePoints.push(_P);
+			
+			// Position
+			_P.changePosition(_pos);
+			
+			//Autre
+			_P.couleur(this.couleur())
+		}
+		
+			/** Fonction qui met à jour les enfants */
+		MAJ()
+		{
+			this._listePoints.forEach(function(P){
+				P.MAJ();
+			});
+		}
 }

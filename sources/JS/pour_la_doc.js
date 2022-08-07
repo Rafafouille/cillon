@@ -1,15 +1,14 @@
 /**
- * @typedef {Object} Point
+ * @typedef {Object} Point. Attention à ne pas confondre avec {@link Position} (d'ailleur, cet objet est peut-être déjà obsolète).
  * @property {number} x - Coordonnées sur x
  * @property {number} y - Coordonnées sur y
- * @property {Classe_Equivalence} classe - (Facultatif) Référentel pour le jeu de coordonnées. Par défaut : c'est l'objet "schema"
  */
  
  /**
  * @typedef {Object} Position
- * @property {number} x - Coordonnée sur x (si non-renseignée : les fonctions l'interprète comme 0)..
- * @property {number} y - Coordonnée sur y (si non-renseignée : les fonctions l'interprète comme 0).
- * @property {number} theta - Rotation, en degrès (si non-renseignée : les fonctions l'interprète comme 0).
- * @property {createjs.DisplayObject} contexte - Contexte par rapport auquel les coordonnées sont définies (si non-renseignée : les fonctions l'interprète comme l'objet SCHEMA)
- * @property {Boolean} uniteSI - Si False : les unités par défaut sont utilisée (x et y en px et y vers le bas, et rotation en degrés dans le sens horaire). Si True : les unités personnalisée sont utilées (x et y en unité définie dans SCHEMA.unite(), y vers le haut et theta en radian dans le sens trigo).
+ * @property {number} [x=0] - Coordonnée sur x (si absent : les fonctions l'interprètent comme 0)..
+ * @property {number} [y=0] - Coordonnée sur y (si absent : les fonctions l'interprètent comme 0).
+ * @property {number} [theta=0] - Rotation, en degrès (si absent : les fonctions l'interprètent comme 0).
+ * @property {createjs.DisplayObject} [contexte={@link SCHEMA}] - Contexte par rapport auquel les coordonnées sont définies (si absent : les fonctions l'interprètent comme l'objet {@link SCHEMA})
+ * @property {Boolean} [uniteSI=true] - Si False : les unités par défaut sont utilisées (x et y en pixels avec y vers le bas ; rotation en degrés dans le sens horaire). Si true : les unités personnalisées sont utilées (x et y en unité définie dans {@link schema.unite}, avec y vers le haut et theta en radian dans le sens trigo).
  */

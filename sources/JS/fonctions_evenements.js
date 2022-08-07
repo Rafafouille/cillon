@@ -114,20 +114,31 @@ place_new_pivot=function()
 
 
 // ***********************************************************
-// FONCTION QUI AJOUTE LA LIAISON DANS CHAQUE CLASSE D'EQUIVALENCE A PARTIR DES INFO GLOBALES
-// _i , _j = plusieurs possibilités : Soit le numéro des classes à lier, soit le numéro récupéré dans les liste déroulante
-// _liaison = str de la liaiso à faire ("pivot", "glissiere"....)
-// _centre = coordonnées de la liaison DANS LE SYSTEME DE COORDONNEES DU SCHEMA (peut etre ajouter la possibilité de choisir dans quel contexte de coordonnées)
+			/** Fonction qui ajoute la liaison dans chaque classe d'équivalence à partir des informations globales.
+			@param {Number|Classe_Equivalence} [_i=Voir_menu_déroulant] - Numéro de la classe d'équivalence 1 (ou bien référence vers cette classe). Si absent : récupère le numéro dans le menu déroulant (si placé manuellement).
+			@param {Number|Classe_Equivalence} [_j=Voir_menu_déroulant] - Numéro de la classe d'équivalence 2 (ou bien référence vers cette classe). Si absent : récupère le numéro dans le menu déroulant (si placé manuellement).
+			@param {String} [_liaison=Voir_menu_déroulant] - Nom de la liaison, parmi : "pivot", "glissiere". Si absent, récupère celle du menu déroulant (si placé manuellement).
+			@param {Position} [_centre=Position_de_la_souris] - Position de la liaison à placer.
+			@return {Boolean} 'true' si la classe est bloquée. 'false' sinon.
+			*/
 ajouteLiaison = function(_i,_j,_liaison,_centre)
 {
-
+	if(typeof(BRAS1)!="undefined" && typeof(BATI)!="undefined")
+		{
+		console.log("alors qu'on aurait du avoir :")
+		console.log(BATI.localToLocal(60,0 ,BRAS1))
+		}
 	if(typeof(_i)=="undefined")
 		var classe1 = getClasse1();
+	else if(_i instanceof Classe_Equivalence)
+		var classe1 = _i
 	else
 		var classe1 = schema.classes[_i]
 	
 	if(typeof(_j)=="undefined")
 		var classe2 = getClasse2();
+	else if(_j instanceof Classe_Equivalence)
+		var classe2 = _j
 	else
 		var classe2 = schema.classes[_j]
 		
@@ -137,7 +148,7 @@ ajouteLiaison = function(_i,_j,_liaison,_centre)
 		var liaison = _liaison
 		
 	if(typeof(_centre)=="undefined")
-		var centre = {x:schema.XSOURIS(),y:schema.YSOURIS()}
+		var centre = {x:schema.XSOURIS(),y:schema.YSOURIS(),contexte:SCHEMA}
 	else
 		var centre = _centre
 		
@@ -156,7 +167,6 @@ ajouteLiaison = function(_i,_j,_liaison,_centre)
 		
 		liaisonFemelle.couleur(classe2.couleur());
 		liaisonFemelle.demiSoeur(liaisonMale);
-		
 		classe1.ajouteDemiLiaison(liaisonMale,centre);
 		classe2.ajouteDemiLiaison(liaisonFemelle,centre);
 	}

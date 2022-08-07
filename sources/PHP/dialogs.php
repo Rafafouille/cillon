@@ -62,7 +62,7 @@
 				?>
 				</div>
 			</div>
-			<input type="checkbox" id="checkbox-console-reset" name="checkbox-console-reset">
+			<input type="checkbox" id="checkbox-console-reset" name="checkbox-console-reset" checked>
 				<label for="checkbox-console-reset">Effacer le dessin avant l'exécution.</label>
 			<a href="documentation/" target="_blanck"><img style="height:30px;" src="./sources/images/help.svg" alt="[DOCUMENTATION]" title="Documentation"/></a>
 		</form>
@@ -84,7 +84,7 @@
 			    ,
 			    {
 			      text: "Exécuter",
-			      click: function(){}
+			      click: function(){execute_console($('#checkbox-console-reset').is(':checked'));$(this).dialog("close");}
 			    }
 			  ]
 	});

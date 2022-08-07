@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>classes/liaisons/CLASS-DemiLiaison.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Accroche.html">Accroche</a><ul class='methods'><li data-type='method'><a href="Accroche.html#autoSupprime">autoSupprime</a></li><li data-type='method'><a href="Accroche.html#classe">classe</a></li><li data-type='method'><a href="Accroche.html#consigneAngulaire">consigneAngulaire</a></li><li data-type='method'><a href="Accroche.html#couleur">couleur</a></li><li data-type='method'><a href="Accroche.html#demiSoeur">demiSoeur</a></li><li data-type='method'><a href="Accroche.html#epaisseur">epaisseur</a></li><li data-type='method'><a href="Accroche.html#genre">genre</a></li><li data-type='method'><a href="Accroche.html#getAbsoluteRotation">getAbsoluteRotation</a></li><li data-type='method'><a href="Accroche.html#k">k</a></li><li data-type='method'><a href="Accroche.html#kRot">kRot</a></li><li data-type='method'><a href="Accroche.html#L1L2">L1L2</a></li><li data-type='method'><a href="Accroche.html#L1S">L1S</a></li><li data-type='method'><a href="Accroche.html#longueurTige">longueurTige</a></li><li data-type='method'><a href="Accroche.html#nbDDL">nbDDL</a></li><li data-type='method'><a href="Accroche.html#O1L1">O1L1</a></li><li data-type='method'><a href="Accroche.html#pilotee">pilotee</a></li><li data-type='method'><a href="Accroche.html#rayon">rayon</a></li><li data-type='method'><a href="Accroche.html#remplisSysteme_liaison">remplisSysteme_liaison</a></li><li data-type='method'><a href="Accroche.html#updateCouleurGraphismes">updateCouleurGraphismes</a></li><li data-type='method'><a href="Accroche.html#updateEpaisseurGraphismes">updateEpaisseurGraphismes</a></li></ul></li><li><a href="Classe_Equivalence.html">Classe_Equivalence</a><ul class='methods'><li data-type='method'><a href="Classe_Equivalence.html#ajouteDemiLiaison">ajouteDemiLiaison</a></li><li data-type='method'><a href="Classe_Equivalence.html#ajouteImage">ajouteImage</a></li><li data-type='method'><a href="Classe_Equivalence.html#ajoutePoint">ajoutePoint</a></li><li data-type='method'><a href="Classe_Equivalence.html#bloque">bloque</a></li><li data-type='method'><a href="Classe_Equivalence.html#changePosition">changePosition</a></li><li data-type='method'><a href="Classe_Equivalence.html#COORD">COORD</a></li><li data-type='method'><a href="Classe_Equivalence.html#couleur">couleur</a></li><li data-type='method'><a href="Classe_Equivalence.html#defloute">defloute</a></li><li data-type='method'><a href="Classe_Equivalence.html#deselectionne">deselectionne</a></li><li data-type='method'><a href="Classe_Equivalence.html#dessineLigne">dessineLigne</a></li><li data-type='method'><a href="Classe_Equivalence.html#echelle">echelle</a></li><li data-type='method'><a href="Classe_Equivalence.html#floute">floute</a></li><li data-type='method'><a href="Classe_Equivalence.html#getLocalPosition">getLocalPosition</a></li><li data-type='method'><a href="Classe_Equivalence.html#getSourisLocal">getSourisLocal</a></li><li data-type='method'><a href="Classe_Equivalence.html#getTorseurCinematique">getTorseurCinematique</a></li><li data-type='method'><a href="Classe_Equivalence.html#getVRotation">getVRotation</a></li><li data-type='method'><a href="Classe_Equivalence.html#historique">historique</a></li><li data-type='method'><a href="Classe_Equivalence.html#lastPosition">lastPosition</a></li><li data-type='method'><a href="Classe_Equivalence.html#longueurHistorique">longueurHistorique</a></li><li data-type='method'><a href="Classe_Equivalence.html#MAJ">MAJ</a></li><li data-type='method'><a href="Classe_Equivalence.html#nom">nom</a></li><li data-type='method'><a href="Classe_Equivalence.html#numero">numero</a></li><li data-type='method'><a href="Classe_Equivalence.html#pushHistorique">pushHistorique</a></li><li data-type='method'><a href="Classe_Equivalence.html#recentreOrigine">recentreOrigine</a></li><li data-type='method'><a href="Classe_Equivalence.html#remplitSysteme">remplitSysteme</a></li><li data-type='method'><a href="Classe_Equivalence.html#restoreLastPosition">restoreLastPosition</a></li><li data-type='method'><a href="Classe_Equivalence.html#sauveLastPosition">sauveLastPosition</a></li><li data-type='method'><a href="Classe_Equivalence.html#selectionne">selectionne</a></li><li data-type='method'><a href="Classe_Equivalence.html#selectionneDeselectionne">selectionneDeselectionne</a></li><li data-type='method'><a href="Classe_Equivalence.html#supprimeDemiLiaison">supprimeDemiLiaison</a></li><li data-type='method'><a href="Classe_Equivalence.html#THETA">THETA</a></li><li data-type='method'><a href="Classe_Equivalence.html#type">type</a></li><li data-type='method'><a href="Classe_Equivalence.html#updateBounds">updateBounds</a></li><li data-type='method'><a href="Classe_Equivalence.html#X">X</a></li><li data-type='method'><a href="Classe_Equivalence.html#Y">Y</a></li></ul></li><li><a href="DemiLiaison.html">DemiLiaison</a><ul class='methods'><li data-type='method'><a href="DemiLiaison.html#autoSupprime">autoSupprime</a></li><li data-type='method'><a href="DemiLiaison.html#classe">classe</a></li><li data-type='method'><a href="DemiLiaison.html#consigneAngulaire">consigneAngulaire</a></li><li data-type='method'><a href="DemiLiaison.html#couleur">couleur</a></li><li data-type='method'><a href="DemiLiaison.html#demiSoeur">demiSoeur</a></li><li data-type='method'><a href="DemiLiaison.html#epaisseur">epaisseur</a></li><li data-type='method'><a href="DemiLiaison.html#genre">genre</a></li><li data-type='method'><a href="DemiLiaison.html#getAbsoluteRotation">getAbsoluteRotation</a></li><li data-type='method'><a href="DemiLiaison.html#k">k</a></li><li data-type='method'><a href="DemiLiaison.html#kRot">kRot</a></li><li data-type='method'><a href="DemiLiaison.html#L1L2">L1L2</a></li><li data-type='method'><a href="DemiLiaison.html#nbDDL">nbDDL</a></li><li data-type='method'><a href="DemiLiaison.html#O1L1">O1L1</a></li><li data-type='method'><a href="DemiLiaison.html#pilotee">pilotee</a></li><li data-type='method'><a href="DemiLiaison.html#remplisSysteme_liaison">remplisSysteme_liaison</a></li><li data-type='method'><a href="DemiLiaison.html#updateCouleurGraphismes">updateCouleurGraphismes</a></li><li data-type='method'><a href="DemiLiaison.html#updateEpaisseurGraphismes">updateEpaisseurGraphismes</a></li></ul></li><li><a href="Ligne.html">Ligne</a><ul class='methods'><li data-type='method'><a href="Ligne.html#couleur">couleur</a></li></ul></li><li><a href="PivotFemelle.html">PivotFemelle</a><ul class='methods'><li data-type='method'><a href="PivotFemelle.html#autoSupprime">autoSupprime</a></li><li data-type='method'><a href="PivotFemelle.html#classe">classe</a></li><li data-type='method'><a href="PivotFemelle.html#consigneAngulaire">consigneAngulaire</a></li><li data-type='method'><a href="PivotFemelle.html#couleur">couleur</a></li><li data-type='method'><a href="PivotFemelle.html#demiSoeur">demiSoeur</a></li><li data-type='method'><a href="PivotFemelle.html#epaisseur">epaisseur</a></li><li data-type='method'><a href="PivotFemelle.html#genre">genre</a></li><li data-type='method'><a href="PivotFemelle.html#getAbsoluteRotation">getAbsoluteRotation</a></li><li data-type='method'><a href="PivotFemelle.html#k">k</a></li><li data-type='method'><a href="PivotFemelle.html#kRot">kRot</a></li><li data-type='method'><a href="PivotFemelle.html#L1L2">L1L2</a></li><li data-type='method'><a href="PivotFemelle.html#longueurTige">longueurTige</a></li><li data-type='method'><a href="PivotFemelle.html#nbDDL">nbDDL</a></li><li data-type='method'><a href="PivotFemelle.html#O1L1">O1L1</a></li><li data-type='method'><a href="PivotFemelle.html#pilotee">pilotee</a></li><li data-type='method'><a href="PivotFemelle.html#rayon">rayon</a></li><li data-type='method'><a href="PivotFemelle.html#updateCouleurGraphismes">updateCouleurGraphismes</a></li><li data-type='method'><a href="PivotFemelle.html#updateEpaisseurGraphismes">updateEpaisseurGraphismes</a></li></ul></li><li><a href="PivotMale.html">PivotMale</a><ul class='methods'><li data-type='method'><a href="PivotMale.html#autoSupprime">autoSupprime</a></li><li data-type='method'><a href="PivotMale.html#classe">classe</a></li><li data-type='method'><a href="PivotMale.html#consigneAngulaire">consigneAngulaire</a></li><li data-type='method'><a href="PivotMale.html#couleur">couleur</a></li><li data-type='method'><a href="PivotMale.html#demiSoeur">demiSoeur</a></li><li data-type='method'><a href="PivotMale.html#epaisseur">epaisseur</a></li><li data-type='method'><a href="PivotMale.html#genre">genre</a></li><li data-type='method'><a href="PivotMale.html#getAbsoluteRotation">getAbsoluteRotation</a></li><li data-type='method'><a href="PivotMale.html#k">k</a></li><li data-type='method'><a href="PivotMale.html#kRot">kRot</a></li><li data-type='method'><a href="PivotMale.html#L1L2">L1L2</a></li><li data-type='method'><a href="PivotMale.html#longueurTige">longueurTige</a></li><li data-type='method'><a href="PivotMale.html#nbDDL">nbDDL</a></li><li data-type='method'><a href="PivotMale.html#O1L1">O1L1</a></li><li data-type='method'><a href="PivotMale.html#pilotee">pilotee</a></li><li data-type='method'><a href="PivotMale.html#rayon">rayon</a></li><li data-type='method'><a href="PivotMale.html#updateCouleurGraphismes">updateCouleurGraphismes</a></li><li data-type='method'><a href="PivotMale.html#updateEpaisseurGraphismes">updateEpaisseurGraphismes</a></li></ul></li><li><a href="Point.html">Point</a><ul class='methods'><li data-type='method'><a href="Point.html#changePosition">changePosition</a></li><li data-type='method'><a href="Point.html#couleur">couleur</a></li><li data-type='method'><a href="Point.html#diametre">diametre</a></li><li data-type='method'><a href="Point.html#epaisseur">epaisseur</a></li><li data-type='method'><a href="Point.html#MAJ">MAJ</a></li><li data-type='method'><a href="Point.html#nom">nom</a></li></ul></li><li><a href="Schema.html">Schema</a><ul class='methods'><li data-type='method'><a href="Schema.html#ajouteClasse">ajouteClasse</a></li><li data-type='method'><a href="Schema.html#choisitCouleur">choisitCouleur</a></li><li data-type='method'><a href="Schema.html#echelle">echelle</a></li><li data-type='method'><a href="Schema.html#faitBougerLaSimulation">faitBougerLaSimulation</a></li><li data-type='method'><a href="Schema.html#MAJ">MAJ</a></li><li data-type='method'><a href="Schema.html#nbClasses">nbClasses</a></li><li data-type='method'><a href="Schema.html#pushHistoriques">pushHistoriques</a></li><li data-type='method'><a href="Schema.html#reset">reset</a></li><li data-type='method'><a href="Schema.html#restorePositions">restorePositions</a></li><li data-type='method'><a href="Schema.html#sauvePositions">sauvePositions</a></li><li data-type='method'><a href="Schema.html#souris">souris</a></li><li data-type='method'><a href="Schema.html#SOURIS">SOURIS</a></li><li data-type='method'><a href="Schema.html#tSimulation">tSimulation</a></li><li data-type='method'><a href="Schema.html#unite">unite</a></li><li data-type='method'><a href="Schema.html#updateSourisFromStagePosition">updateSourisFromStagePosition</a></li><li data-type='method'><a href="Schema.html#x2X">x2X</a></li><li data-type='method'><a href="Schema.html#X2x">X2x</a></li><li data-type='method'><a href="Schema.html#xSouris">xSouris</a></li><li data-type='method'><a href="Schema.html#XSOURIS">XSOURIS</a></li><li data-type='method'><a href="Schema.html#y2Y">y2Y</a></li><li data-type='method'><a href="Schema.html#Y2y">Y2y</a></li><li data-type='method'><a href="Schema.html#ySouris">ySouris</a></li><li data-type='method'><a href="Schema.html#YSOURIS">YSOURIS</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#affiche_tous_schemas">affiche_tous_schemas</a></li><li><a href="global.html#affiche_toutes_images">affiche_toutes_images</a></li><li><a href="global.html#ajouteLiaison">ajouteLiaison</a></li><li><a href="global.html#cache_tous_schemas">cache_tous_schemas</a></li><li><a href="global.html#cache_toutes_images">cache_toutes_images</a></li><li><a href="global.html#console2HTML">console2HTML</a></li><li><a href="global.html#convertPosition">convertPosition</a></li><li><a href="global.html#deriveGauche3pts">deriveGauche3pts</a></li><li><a href="global.html#ecraseOptions">ecraseOptions</a></li><li><a href="global.html#execute_console">execute_console</a></li><li><a href="global.html#ferme_menus">ferme_menus</a></li><li><a href="global.html#getClasse">getClasse</a></li><li><a href="global.html#getGlobalRotation">getGlobalRotation</a></li><li><a href="global.html#getLocalToLocalRotation">getLocalToLocalRotation</a></li><li><a href="global.html#resetActions">resetActions</a></li><li><a href="global.html#SCHEMA">SCHEMA</a></li><li><a href="global.html#trouveClasse">trouveClasse</a></li><li><a href="global.html#update_liste_CE">update_liste_CE</a></li><li><a href="global.html#update_liste_CE1">update_liste_CE1</a></li><li><a href="global.html#update_liste_CE2">update_liste_CE2</a></li><li><a href="global.html#updateConsoleMiseEnForme">updateConsoleMiseEnForme</a></li><li><a href="global.html#videSuiveur">videSuiveur</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">classes/liaisons/CLASS-DemiLiaison.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//Classe abstraite d'une demi-liaison
+/*
+var DemiLiaison = function()
+{
+	//==========================
+	//Constructeur issu de l'heritage
+	//==========================
+
+		createjs.Container.call(this);
+
+
+	//==========================
+	//Variables Membres
+	//==========================
+	
+		//Définition
+		this._nom = "liaison"	// Nom de la liaison
+		this._genre = "neutre";	//Permet de discriminer la liaison "male" et la liaison "femelle"
+		this._classe = -1;	// Référence vers la classe parente.
+		//Apparence
+		this._couleur="black";	// Couleur
+		this._epaisseur=3;	// Epaisseur du trait
+		this._demiSoeur=null;	// Référence vers la demi-liaison associée (sur l'autre classe d'équivalence)
+		//Simulation
+		this._k=10000;		// Raideur de la liaison en effort
+		this._kRot=1000000;	// Raideur de la liaison en effort moment (s'il y a lieu)
+		this._pilotee = false;	// Dit si la liaison est pilotée (motorisée) ou non
+		this._equation = "0";	// Equation du mouvement
+		this._nbDDL = 0 ; 	// Nombre de DDL
+
+	//==========================
+	//getter/setter
+	//==========================
+
+		// Getter / Setter qui impose / renvoie la couleur
+		this.couleur=function(c)
+		{
+			if(typeof(c)!='undefined')
+				{
+					this._couleur=c;
+					this.updateCouleurGraphismes(c);  //Met à jour les couleur directement sur les graphismes
+				}
+			return this._couleur;
+		}
+		
+		// Getter / Setter qui impose / renvoie l'épaisseur des traits
+		this.epaisseur=function(e)
+		{
+			if(typeof(e)!='undefined')
+				{
+					this._epaisseur=e;
+					//Met à jour les couleur directement sur les graphismes
+					this.updateEpaisseurGraphismes(e);  //Met à jour les épaisseur directement sur les graphismes
+				}
+			return this._epaisseur;
+		}
+	
+		// Getter / Setter qui donne la réf. de lautre moitié de liaison
+		this.demiSoeur=function(d)
+		{
+			if(typeof(d)!='undefined')
+					this._demiSoeur=d;
+			return this._demiSoeur;
+		}
+		
+		// Getter / Setter de la raideur en force
+		this.k=function(k)
+		{
+			if(typeof(k)!='undefined')
+					this._k=k;
+			return this._k;
+		}
+
+		// Getter / Setter de la raideur en moment
+		this.kRot=function(k)
+		{
+			if(typeof(k)!='undefined')
+					this._kRot=k;
+			return this._kRot;
+		}
+
+		
+		// Getter / Setter qui impose le mouvement de la liaison
+		this.pilotee=function(p)
+		{
+			if(typeof(p)!='undefined')
+			{
+					this._pilotee=!!p;
+					this._demiSoeur._pilotee=!!p;
+			}
+			return this._pilotee;
+		}
+		
+		// Getter / Setter du genre (male / femelle)
+		this.genre=function(g)
+		{
+			if(typeof(g)!='undefined')
+					this._genre=g;
+			return this._genre;
+		}
+		
+		// Getter / Setter de de la ref. vers la classe d'équivalence
+		this.classe = function(c)
+		{
+			if(typeof(c)!='undefined')
+					this._classe=c;
+			return this._classe;
+		}
+		
+		// Getter du nombre de DDL
+		this.nbDDL = function(n)
+		{
+			return this._nbDDL;
+		}
+	//==========================
+	//Autres fonctions membres
+	//==========================
+
+
+		//MÉTHODE ABSTRAITE
+		//Fonction qui met à jour la couleur des graphismes de la liaison (appelée avec this.couleur() en setter)
+		this.updateCouleurGraphismes = function(_coul)
+		{
+			// À COMPLÉTER DANS LES LIAISONS FILLES
+		}
+
+		//MÉTHODE ABSTRAITE
+		//Fonction qui met à jour l'épaisseur des graphismes de la liaison (appelée avec this.epaisseur() en setter)
+		this.updateEpaisseurGraphismes = function(_ep)
+		{
+			// À COMPLÉTER DANS LES LIAISONS FILLES
+		}
+		
+		//Renvoie l'angle de rotation par rapport au schéma parent
+		this.getAbsoluteRotation=function()
+		{
+			return this.rotation + this.classe().rotation;
+		}
+		
+		//Fonction qui renvoie le vecteur {x,y} (en coordonnées absolues) entre cette demi liaison et sa soeur
+		this.L1L2 = function()
+		{
+			if(this._demiSoeur != null)
+			{
+				var L1 = this.localToLocal(0,0,schema);
+				var L2 = this.demiSoeur().localToLocal(0,0,schema);
+				return {x:L2.x-L1.x, y:L2.y-L1.y}
+			}
+			else
+				return {x:0,y:0}
+		}
+		//Fonction qui renvoie (en coordonnées absolues du schema) le vecteur entre l'origine de la CE mère, et cette liaison
+		this.O1L1 = function()
+		{
+			var O1 = this.classe().localToLocal(0,0,schema);
+			var L1 = this.localToLocal(0,0,schema);
+			return {x: L1.x-O1.x, y:L1.y-O1.y}
+		}
+		
+		//MÉTHODE ABSTRAITE
+		//Ajoute (dans les grosses matrices K et F globales) la sous partie liée à la liaison
+		this.remplisSysteme_liaison = function(K,F)
+		{
+			// À COMPLÉTER DANS LES LIAISONS FILLES
+			
+			var n1 = this.classe().numero(); //Numéro de la CE
+			var n2 = this.demiSoeur().classe().numero() // Numéro de la CE de la demi-Soeur
+		
+			//Portion de systeme, lié aux inconnues : X = [[dx1], [dy1], [dtheta1], [dx2], [dy2], [dtheta2]] ou 1 est la demi-liaison courante et 2 et la demi-liaison soeur.
+			var KK = [	[0,	0,	0,	0,	0,	0],
+					[0,	0,	0,	0,	0,	0],
+					[0,	0,	0,	0,	0,	0]	] ;
+					
+			var FF = [0	,	0	,	0] ;
+			
+
+			//On recopie dans les bonnes lignes de K et F
+			for(var i=0; i&lt;3 ; i++) // Pour chacune des 3 lignes
+			{
+				// Recopiage
+				K.ajouteVal( 3*n1+i , 3*n1,	KK[i][0])
+				K.ajouteVal( 3*n1+i , 3*n1+1,	KK[i][1])
+				K.ajouteVal( 3*n1+i , 3*n1+2,	KK[i][2])
+				
+				K.ajouteVal( 3*n1+i , 3*n2, 	KK[i][3])
+				K.ajouteVal( 3*n1+i , 3*n2+1,	KK[i][4])
+				K.ajouteVal( 3*n1+i , 3*n2+2,  KK[i][5])
+				
+				F.ajouteVal( 3*n1+i, FF[i])
+			}
+			
+			
+			// AJOUTE DE LA MOTORISATION
+			if(this._pilotee &amp;&amp; ACTION == "simule")
+			{
+				//A compléter
+			}
+			
+			return {K:KK,F:FF}	// Renvoyé pour info (K et F sont modifiés en place
+		}
+
+		//Fonction qui sert de consigne angulaire, dans le cas où c'est une piloté
+		// i est le n° du DDL piloté
+		this.consigneAngulaire=function(_i)
+		{
+			var i = (_i==undefined) ? 1:i
+			if(i==1)	//A modifier (c'est un exemple)
+			{
+				return 0
+			}
+			return 0
+		}
+		
+		
+		//Fonction qui supprime la classe
+		this.autoSupprime = function()
+		{
+			this.classe().supprimeDemiLiaison(this);
+			/*var index = this.classe().liste_liaisons.indexOf(this); //Trouve l'objet dans la liste des liaison
+			if (index > -1)
+			{
+				this.classe().liste_liaisons.splice(index, 1);
+			}
+			this.parent.removeChild(this);
+			if(this._demiSoeur)	//Supperssion de la demi-soeur
+			{
+				this._demiSoeur._demiSoeur = null; //On casse le lien pour pas faire de boucle infinie
+				this._demiSoeur.autoSupprime();
+			}* /
+		}
+		
+	//==========================
+	//Graphismes
+	//==========================
+	
+		// À COMPLETER
+
+		//Les shapes n'ont pas de bornes. Alors on va en créer
+		//	this.setBounds(-this._rayon-this._longueurTige,-this._rayon-this._longueurTige,2*(this._rayon+this._longueurTige),2*(this._rayon+this._longueurTige))
+
+
+}
+DemiLiaison.prototype = Object.create(createjs.Container.prototype);//On recopie le prototype de createjs.Stage
+DemiLiaison.prototype.constructor = DemiLiaison;//On recopie le constructeur de Noeud dans son prototype
+*/
+
+
+
+
+/**
+ * Objet (graphique) représentant une demi-liaison. Classe abstraite.
+ * @extends createjs.Container
+ */
+class DemiLiaison extends createjs.Container
+{
+	/**
+	 * Constructeur
+	 */
+	constructor()
+	{
+		super()	// Rappelle le constructeur parent
+	}
+	
+	
+	//==========================
+	//Variables Membres
+	//==========================
+	
+	
+		// Définition **************************
+		
+			/** Nom de la liaison
+			@type {String}  */
+		_nom = "liaison";
+		
+			/** Permet de discriminer la liaison "male" et la liaison "femelle" 
+			@type {String}*/
+		_genre = "neutre";
+		
+			/**  Référence vers la classe parente.
+			@type {Number}*/
+		_classe = null;
+		
+			/**  Référence vers la classe parente.
+			@type {Number}*/
+		
+		// Apparence ***********************************
+
+		
+			/** Couleur de la demi-liaison
+			@type {String}*/
+		_couleur="black";
+		
+			/** Épaisseur de la demi-liaison
+			@type {Number}*/
+		_epaisseur=3;
+		
+			/** Référence vers la demi-liaison associée (sur l'autre classe d'équivalence)
+			@type {DemiLiaison}*/
+		_demiSoeur = null;
+		
+		//Simulation *******************************************
+		
+			/** Raideur de la liaison en effort
+			@type {Number}*/
+		_k=10000;
+		
+			/** Raideur de la liaison en effort moment (s'il y a lieu)
+			@type {Number}*/
+		_kRot=1000000;
+		
+			/** Dit si la liaison est pilotée (motorisée) ou non
+			@type {Boolean}*/
+		_pilotee = false;
+		
+			/** Equation du mouvement
+			@type {String}*/
+		_equation = "0";
+		
+			/** Nombre de DDL
+			@type {Number}*/
+		_nbDDL = 0 ;
+	
+	//==========================
+	//getter/setter
+	//==========================
+
+
+			/** Getter / Setter qui impose ou renvoie la couleur. En setter, met automatiquement les dessins à jour en appelant {@link updateCouleurGraphismes}.
+			@param  {String} c - Couleur (de préférence format "#RRVVBB").
+			@return {String} Couleur. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
+			*/
+		couleur(c)
+		{
+			if(typeof(c)!='undefined')
+				{
+					this._couleur=c;
+					this.updateCouleurGraphismes(c);  //Met à jour les couleur directement sur les graphismes
+				}
+			return this._couleur;
+		}
+
+			/** Getter / Setter qui impose ou renvoie l'épaisseur des traits. En setter, met automatiquement les dessins à jour en appelant {@link updateEpaisseurGraphismes} 
+			@param {Number} e - Épaisseur en px.
+			@return {Number} Épaisseur en px. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
+			*/
+		epaisseur(e)
+		{
+			if(typeof(e)!='undefined')
+				{
+					this._epaisseur=e;
+					//Met à jour les couleur directement sur les graphismes
+					this.updateEpaisseurGraphismes(e);  //Met à jour les épaisseur directement sur les graphismes
+				}
+			return this._epaisseur;
+		}
+	
+			/** Getter / Setter qui donne la référence vers l'objet "autre moitié de liaison"
+			@param {DemiLiaison} d - Référence vers l'objet "demi-liaison" correspondant.
+			@return {DemiLiaison} Référence vers l'objet "demi-liaison" correspondant. En cas de Setter, c'est la nouvelle référence qui est renvoyée.
+			*/
+		demiSoeur(d)
+		{
+			if(typeof(d)!='undefined')
+					this._demiSoeur=d;
+			return this._demiSoeur;
+		}
+
+			/** GGetter / Setter de la raideur des liaisons en force
+			@param {Number} k - Raideur.
+			@return {Number} Raideur. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
+			*/
+		k(k)
+		{
+			if(typeof(k)!='undefined')
+					this._k=k;
+			return this._k;
+		}
+		
+			/** Getter / Setter de la raideur des laisons en moment (quand il y a lieu)
+			@param {Number} k - Raideur.
+			@return {Number} Raideur. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
+			*/
+		kRot(k)
+		{
+			if(typeof(k)!='undefined')
+					this._kRot=k;
+			return this._kRot;
+		}
+
+			/** Getter / Setter qui impose le mouvement de la liaison
+			@param {Boolean} p - true si on veut piloter, false si elle est libre.
+			@return {Boolean} true si on veut piloter, false si elle est libre. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
+			*/
+		pilotee(p)
+		{
+			if(typeof(p)!='undefined')
+			{
+					this._pilotee=!!p;
+					this._demiSoeur._pilotee=!!p;
+			}
+			return this._pilotee;
+		}
+		
+			/** Getter / Setter du genre de la liaison (male / femelle)
+			@param {String} g - Genre : "male" ou "femelle". "neutre" par défaut dans la classe abstraite.
+			@return {String} Genre. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
+			*/
+		genre(g)
+		{
+			if(typeof(g)!='undefined')
+					this._genre=g;
+			return this._genre;
+		}
+		
+			/** Getter / Setter de la reférence vers la classe d'équivalence à laquelle est associée la demi-liaison.
+			@param {Classe_Equivalence} c - Référence vers l'objet Classe_Equivalence.
+			@return {Classe_Equivalence} Référence vers l'objet Classe_Equivalence. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
+			*/
+		classe(c)
+		{
+			if(typeof(c)!='undefined')
+					this._classe=c;
+			return this._classe;
+		}
+				
+			/** Getter / Setter de la reférence du nombre de degrés de liberté de la liaison.
+			@param {Number} n - Nombre de DDL.
+			@return {Number} Nombre de DDL.. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
+			*/
+		nbDDL(n)
+		{
+			return this._nbDDL;
+		}
+	//==========================
+	//Autres fonctions membres
+	//==========================
+
+
+			/** MÉTHODE ABSTRAITE - Fonction qui met à jour la couleur des graphismes de la liaison (appelée avec this.couleur() en setter) en accord avec la géométrie de la liaison.
+			@param {String} _coul - Couleur
+			*/
+		updateCouleurGraphismes(_coul)
+		{
+			// À COMPLÉTER DANS LES LIAISONS FILLES
+		}
+
+			/** MÉTHODE ABSTRAITE - Fonction qui met à jour l'épaisseur des graphismes de la liaison (appelée avec this.epaisseur() en setter) en accord avec la géométrie de la liaison
+			@param {Number} _ep - Nombre de DDL.
+			*/
+		updateEpaisseurGraphismes(_ep)
+		{
+			// À COMPLÉTER DANS LES LIAISONS FILLES
+		}
+		
+			/** Renvoie l'angle de rotation par rapport au schéma parent
+			@return {Number} Angle de rotation en degrés, dans la convention de signe du dessin.
+			*/
+		getAbsoluteRotation()
+		{
+			return this.rotation + this.classe().rotation;
+		}
+		
+			/** Fonction qui renvoie le vecteur {x,y} (en coordonnées absolues) entre cette demi liaison et sa soeur
+			@return {Object} {x:   , y: }
+			*/
+		L1L2()
+		{
+			if(this._demiSoeur != null)
+			{
+				var L1 = this.localToLocal(0,0,schema);
+				var L2 = this.demiSoeur().localToLocal(0,0,schema);
+				return {x:L2.x-L1.x, y:L2.y-L1.y}
+			}
+			else
+				return {x:0,y:0}
+		}
+		
+			/** Fonction qui renvoie (en coordonnées absolues du schema) le vecteur entre l'origine de la classe d'équivalence mère, et cette liaison
+			@return {Object} {x:   , y: }
+			*/
+		O1L1()
+		{
+			var O1 = this.classe().localToLocal(0,0,schema);
+			var L1 = this.localToLocal(0,0,schema);
+			return {x: L1.x-O1.x, y:L1.y-O1.y}
+		}
+
+			/** MÉTHODE ABSTRAITE - Ajoute (= modifie en place dans les grosses matrices K et F globales) la sous partie liée à la liaison
+			@param {Array} K - Référence vers la matrice K générale du système global
+			@param {Array} F - Référence vers le vecteur F second membre du système global (vecteur en ligne, à une dimension)
+			@return {Object} {K:   , F :} Objet représentant les PETITES matrices du système, liées à la liaison (Attention, ce ne sont pas les matrices globales)
+			*/
+		remplisSysteme_liaison(K,F)
+		{
+			// À COMPLÉTER DANS LES LIAISONS FILLES
+			
+			var n1 = this.classe().numero(); //Numéro de la CE
+			var n2 = this.demiSoeur().classe().numero() // Numéro de la CE de la demi-Soeur
+		
+			//Portion de systeme, lié aux inconnues : X = [[dx1], [dy1], [dtheta1], [dx2], [dy2], [dtheta2]] ou 1 est la demi-liaison courante et 2 et la demi-liaison soeur.
+			var KK = [	[0,	0,	0,	0,	0,	0],
+					[0,	0,	0,	0,	0,	0],
+					[0,	0,	0,	0,	0,	0]	] ;
+					
+			var FF = [0	,	0	,	0] ;
+			
+
+			//On recopie dans les bonnes lignes de K et F
+			for(var i=0; i&lt;3 ; i++) // Pour chacune des 3 lignes
+			{
+				// Recopiage
+				K.ajouteVal( 3*n1+i , 3*n1,	KK[i][0])
+				K.ajouteVal( 3*n1+i , 3*n1+1,	KK[i][1])
+				K.ajouteVal( 3*n1+i , 3*n1+2,	KK[i][2])
+				
+				K.ajouteVal( 3*n1+i , 3*n2, 	KK[i][3])
+				K.ajouteVal( 3*n1+i , 3*n2+1,	KK[i][4])
+				K.ajouteVal( 3*n1+i , 3*n2+2,  KK[i][5])
+				
+				F.ajouteVal( 3*n1+i, FF[i])
+			}
+			
+			
+			// AJOUTE DE LA MOTORISATION
+			if(this._pilotee &amp;&amp; ACTION == "simule")
+			{
+				//A compléter
+			}
+			
+			return {K:KK,F:FF}	// Renvoyé pour info (K et F sont modifiés en place
+		}
+
+			/** Fonction qui sert de consigne angulaire, dans le cas où c'est une piloté
+			@param {Number} _i - (Facultatif) Numéro du DDL à piloter (n°1 par défaut)
+			@return {Number} Valeur de la consigne pour ce DDL
+			*/
+		consigneAngulaire(_i)
+		{
+			var i = (_i==undefined) ? 1:i
+			if(i==1)	//A modifier (c'est un exemple)
+			{
+				return 0
+			}
+			return 0
+		}
+		
+
+			/** Fonction qui supprime la liaison de la classe d'équivalence mère
+			*/
+		autoSupprime()
+		{
+			this.classe().supprimeDemiLiaison(this);
+		}
+	
+}
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Sun Jul 31 2022 23:54:06 GMT+0200 (heure d’été d’Europe centrale) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

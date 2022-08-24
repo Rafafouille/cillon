@@ -12,17 +12,26 @@ resout = function()
 
 	//console.log(math.det(systeme.K))
 	
+	//console.log("=======")
+	//affiche_matrice(systeme.K._data);
+	//affiche_matrice(systeme.F._data);
+	
 	//On résout
 	solution = math.usolve(systeme.K,systeme.F)
 	
+	//console.log("---")
+	//affiche_matrice(solution._data);
 	
 	//On déplace les pièces
 	for(i=0;i<schema.nbClasses();i++)
 	{
 		n=3*i;
-		schema.classes[i].x += solution.get([3*i,0])
-		schema.classes[i].y += solution.get([3*i+1,0])
-		schema.classes[i].rotation += solution.get([3*i+2,0])*180/math.pi
+			var dx = solution.get([3*i,0]);
+		schema.classes[i].x += dx>10 ? 10 : dx
+			var dy = solution.get([3*i+1,0]);
+		schema.classes[i].y += dy>10 ? 10: dy
+			var dtheta=solution.get([3*i+2,0])*180/math.pi
+		schema.classes[i].rotation += dtheta>5?5:dtheta	// Pour brider la rotation
 	}
 }
 

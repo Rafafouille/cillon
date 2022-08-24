@@ -123,11 +123,6 @@ place_new_pivot=function()
 			*/
 ajouteLiaison = function(_i,_j,_liaison,_centre)
 {
-	if(typeof(BRAS1)!="undefined" && typeof(BATI)!="undefined")
-		{
-		console.log("alors qu'on aurait du avoir :")
-		console.log(BATI.localToLocal(60,0 ,BRAS1))
-		}
 	if(typeof(_i)=="undefined")
 		var classe1 = getClasse1();
 	else if(_i instanceof Classe_Equivalence)
@@ -155,6 +150,7 @@ ajouteLiaison = function(_i,_j,_liaison,_centre)
 	var liaisonMale = null;
 	var liaisonFemelle = null;
 
+	var objet_liaison = null;
 
 	if(liaison == "pivot")
 	{
@@ -169,6 +165,9 @@ ajouteLiaison = function(_i,_j,_liaison,_centre)
 		liaisonFemelle.demiSoeur(liaisonMale);
 		classe1.ajouteDemiLiaison(liaisonMale,centre);
 		classe2.ajouteDemiLiaison(liaisonFemelle,centre);
+		
+		
+		objet_liaison = {L1:liaisonMale, L2:liaisonFemelle}
 	}
 	
 	if(liaison == "glissiere")
@@ -184,6 +183,9 @@ ajouteLiaison = function(_i,_j,_liaison,_centre)
 		
 		classe1.ajouteDemiLiaison(liaisonMale,centre);
 		classe2.ajouteDemiLiaison(liaisonFemelle,centre);
+		
+		
+		objet_liaison = {L1:liaisonMale, L2:liaisonFemelle}
 	}
 	
 	
@@ -191,7 +193,11 @@ ajouteLiaison = function(_i,_j,_liaison,_centre)
 	//classe1.recentreOrigine();
 	//classe2.recentreOrigine();
 	
-	return {L1:liaisonMale, L2:liaisonFemelle}
+	//var liaison = {L1:liaisonMale, L2:liaisonFemelle}
+	
+	LISTE_LIAISONS.push(objet_liaison);
+	
+	return objet_liaison
 }
 
 

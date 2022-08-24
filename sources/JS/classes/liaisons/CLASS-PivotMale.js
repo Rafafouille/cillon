@@ -278,22 +278,154 @@ class PivotMale extends DemiLiaison
 		{
 			// À FAIRE
 		}
+		
+		
+			/** ÉCRASE LA CLASSE ABSTRAITE MÈRE - Fonction qui met à jour la variable this._VS, qui contient les constantes de simulation (histoire de ne les calculer qu'une fois par pas de temps).
+			@return {Object} Objet contenant toutes les constantes de simulation.
+			*/
+		updateConstantesSimulation()
+		{
+			this._VS.O1L1 = this.O1L1() ;
+			this._VS.O2L2 = this.demiSoeur().O1L1(); ;
+			this._VS.L1L2 = this.L1L2() ;
+			return this._VS
+		}
+		
+		
+			/**ÉCRASE LA CLASSE ABSTRAITE MÈRE -  Fonction qui renvoie les coefficients de la matrice K
+			
+			@param {Number} _eq - N° de l'équation (correspond à 'quelle ligne ?') du PFS. Peut-être 0 (="TRS sur x"), 1 (="TRS sur y") ou 2 (="TMS en O1' sur theta").
+			@param {Number} _i - Inconnue (correspond à 'quelle colonne ?'). Par exemple : 0:dx1, 1:dy1, 2:dtheta1, etc.
+			*/
+		getCoeff_K(_eq, _i)
+		{
+			var c = this._VS
+			if(_eq==0)
+			{
+				if(_i==0)
+				{
+					return -this._k ;
+				}
+				else if(_i==1)
+				{
+					return 0 ;
+				}
+				else if(_i==2)
+				{
+					return this._k*c.O1L1.y;
+				}
+				else if(_i==3)
+				{
+					return this._k ;
+				}
+				else if(_i==4)
+				{
+					return 0 ;
+				}
+				else if(_i==5)
+				{
+					return -this._k*c.O2L2.y;
+				}
+			}
+			else if(_eq==1)
+			{
+				if(_i==0)
+				{
+					return 0;
+				}
+				else if(_i==1)
+				{
+					return -this._k;
+				}
+				else if(_i==2)
+				{
+					return -this._k * c.O1L1.x;
+				}
+				else if(_i==3)
+				{
+					return 0 ;
+				}
+				else if(_i==4)
+				{
+					return this._k;
+				}
+				else if(_i==5)
+				{
+					return this._k*c.O2L2.x;
+				}
+			}
+			else if(_eq==2)
+			{
+				if(_i==0) 
+				{
+					return this._k * c.O1L1.y;
+				}
+				else if(_i==1)
+				{
+					return -this._k * c.O1L1.x;
+				}
+				else if(_i==2)
+				{
+					return -this._k * (c.O1L1.y * c.O1L1.y + c.O1L1.x * c.O1L1.x + c.O1L1.y * c.L1L2.y - c.O1L1.x * c.L1L2.x);
+				}
+				else if(_i==3)
+				{
+					return -this._k * c.O1L1.y ;
+				}
+				else if(_i==4)
+				{
+					return this._k * c.O1L1.x ;
+				}
+				else if(_i==5)
+				{
+					return this._k * (c.O1L1.y * c.O2L2.y + c.O1L1.x * c.O2L2.x ) ;
+				}
+			}
+		}
 
-			/** Ajoute (= modifie en place dans les grosses matrices K et F globales) la sous partie liée à la liaison. Écrase la méthode abstraite mère.
+/** Fonction qui renvoie les coefficients de la matrice K
+			
+			@param {Number} _eq - N° de l'équation (correspond à 'quelle ligne ?') du PFS. Peut-être 0 (="TRS sur x"), 1 (="TRS sur y") ou 2 (="TMS en O1' sur theta").
+			*/
+		getCoeff_F(_eq)
+		{
+			var c=this._VS; // Les constantes
+			
+			if(_eq==0)
+			{
+				return -this._k * c.L1L2.x
+			}
+			else if(_eq==1)
+			{
+				return -this._k * c.L1L2.y
+			}
+			else if(_eq==2)
+			{
+				return this._k * (c.O1L1.y*c.L1L2.x-c.O1L1.x*c.L1L2.y)
+			}
+
+			return null;
+		}
+
+
+
+
+			/** (ECRASE L A FONCTION ABSTRAITE) Ajoute (= modifie en place dans les grosses matrices K et F globales) la sous partie liée à la liaison. Écrase la méthode abstraite mère. Voir la démonstration à cette adresse : {@link http://cillon.allais.eu/ressources/demo_pivot.pdf}.
 			@param {Array} K - Référence vers la matrice K générale du système global.
 			@param {Array} F - Référence vers le vecteur F second membre du système global (vecteur en ligne, à une dimension)
 			@return {Object} {K:   , F :} Objet représentant les PETITES matrices du système, liées à la liaison (Attention, ce ne sont pas les matrices globales)
 			*/
-		remplisSysteme_liaison = function(K,F)
+		remplisSysteme_liaison(K,F)
 		{
+			var n1 = this.classe().numero(); //Numéro de la CE
+			var n2 = this.demiSoeur().classe().numero() // Numéro de la CE de la demi-Soeur
+			/*
 			var O1L1 = this.O1L1();
 			var O2L2 = this.demiSoeur().O1L1();
 			var L1L2 = this.L1L2();
 			var k = this._k
-			var n1 = this.classe().numero(); //Numéro de la CE
-			var n2 = this.demiSoeur().classe().numero() // Numéro de la CE de la demi-Soeur
 		
-		
+			console.log("=======================================");
 			//NOTE : il faudra peut être condenser les lignes suivantes
 					
 			var KK = [	[-k,		0,		k*O1L1.y,								k,		0,		-k*O2L2.y],
@@ -306,6 +438,12 @@ class PivotMale extends DemiLiaison
 			var FF = [-k*L1L2.x,	-k*L1L2.y,	k*(O1L1.y*L1L2.x-O1L1.x*L1L2.y)]
 			
 
+*/
+
+			this.updateConstantesSimulation();
+			var KK = this.construit_K_local();	
+			var FF = this.construit_F_local();
+			
 			
 			//On recopie dans les bonnes lignes de K et F
 			for(var i=0; i<3 ; i++) // Pour chacune des 3 lignes
@@ -357,6 +495,24 @@ class PivotMale extends DemiLiaison
 
 	
 
+			/** Fonction qui calcule le score (= la distance) entre chaque demi liaison pivot (écrase la fonction abstraite)
+			@ return {Number} Score
+			*/
+		getScore()
+		{
+			var V= this.L1L2();
+			var ecart_distance = Math.sqrt(V.x*V.x+V.y*V.y); // en px
+			var ecart_consigne = 0 // en °
+			
+			if(this._pilotee && ACTION == "simule")
+			{
+				var deltaTheta0 = this.classe().lastPosition().theta-this.demiSoeur().classe().lastPosition().theta;	//Ecart initial
+				var deltaTheta = this.classe().rotation-this.demiSoeur().classe().rotation;	//Ecart actuel
+				var signe = 1-2*(this._genre=="male")
+				ecart_consigne = Math.abs(deltaTheta-deltaTheta0+signe*this.evalueConsigne()*57.29577951308232);
+			}
+			return  ecart_distance + ecart_consigne;
+		}
 }
 
 

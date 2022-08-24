@@ -289,7 +289,7 @@ console2HTML = function(texte)
 
 
 
-// ************************************************************
+
 /** Fonction qui interprète et exécute la console. Si _reset est à true, le schéma précédent est effacé.
  * @param {Boolean} [_reset=false] - Dit s'il faut effacer le schéma précédent.
  */
@@ -300,6 +300,22 @@ execute_console = function(_reset)
 	eval($("#dialog_console .console").text());//Exécution du code source
 }
 
+
+
+
+/** Fonction qui calcule le score, c'est à dire si les écarts des liaisons.
+Dans le cas idéal, ce score est nul.
+* @return {Number} Le score
+*/	
+getScore = function()
+{
+	var S=0;
+	LISTE_LIAISONS.forEach(function(liaison){
+		//S += liaison.L1.getScore();
+		S=Math.max(S,liaison.L1.getScore());
+	});
+	return S;///LISTE_LIAISONS.length;
+}
 
 
 // ************************************************************
@@ -404,6 +420,50 @@ convertPosition = function(_pos_init, _contexte_final=SCHEMA, _uniteSI=true)
 
 
 
+// ************************************************
+/** Pour le débug : affiche un tableau (1 ou 2D) de nombres dans la console.
+*/
+affiche_matrice = function(M)
+{
+	var inter =11
+	for(var i=0;i<M.length;i++)
+	{
+		var ligne="[\t";
+		if(typeof(M[i])=="object")
+		{
+			for(var j=0;j<M[i].length;j++)
+			{
+				if(Math.abs(M[i][j])<1e-9)
+					var val="0"
+				else
+					var val = String((M[i][j]).toPrecision(4))
+				ligne+=val;
+				for(k=0;k<inter-val.length;k++)
+				{
+					ligne+=" ";
+				}
+			}
+		}
+		else
+			ligne+=String(M[i]);
+		console.log(ligne+"\t]");
+	}
+}
 
+// **************************************************************
+/** Pour le débug : Affiche la matrice de raideur K
+*/
+afficheK = function()
+{
+	console.log("K = ")
+	affiche_matrice(K._data)
+}
 
-
+// **************************************************************
+/** Pour le débug : Affiche le second membre du système F
+*/
+afficheF = function()
+{
+	console.log("F = ")
+	affiche_matrice(F._data)
+}

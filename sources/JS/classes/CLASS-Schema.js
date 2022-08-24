@@ -575,8 +575,20 @@ class Schema extends createjs.Container
 					ACTION=""
 				schema._tSimulation += event.delta/1000.	//On fait s'écouler le temps
 				//console.log(schema._tSimulation);
-				for(var i=0;i<PRECISION;i++)
+				var n=0;
+				var scorePrecedent = Infinity;
+				//console.log("==============");
+				while( n==0 || n < ITER_MAX && (getScore()>PRECISION || ACTION == "MANIP" && SOUS_ACTION == "TIRE"))//Math.abs(scorePrecedent-getScore())>PRECISION )
+				{
+					n++;
+					scorePrecedent=getScore();
 					resout();
+				}
+				if(n>=ITER_MAX)
+				{
+					console.warn("Attention : nombre max d'itérations atteint ("+String(ITER_MAX)+", pour un score de "+String(getScore())+"/"+String(PRECISION)+")")
+				}
+				//console.log({score:getScore(),n:n,delta:Math.abs(scorePrecedent-getScore())})
 				schema.pushHistoriques(schema._tSimulation)
 				SCHEMA.MAJ(); // Met à jours les enfants
 			}

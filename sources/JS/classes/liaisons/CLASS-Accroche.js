@@ -109,7 +109,7 @@ class Accroche extends DemiLiaison
 		super()	// Rappelle le constructeur parent
 		
 		
-		this._k=200;	//Raideur de la liaison
+		this._k=20;	//Raideur de la liaison
 		
 		// Graphismes
 		this._main = new createjs.Bitmap("./sources/images/main_fermee.png");

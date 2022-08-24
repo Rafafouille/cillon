@@ -305,9 +305,9 @@ class DemiLiaison extends createjs.Container
 			@type {Number}*/
 		_k=10000;
 		
-			/** Raideur de la liaison en effort moment (s'il y a lieu)
+			/** Raideur de la liaison en effort moment (s'il y a lieu) en Nm/°.
 			@type {Number}*/
-		_kRot=1000000;
+		_kRot=1000000//1000000;
 		
 			/** Dit si la liaison est pilotée (motorisée) ou non
 			@type {Boolean}*/
@@ -325,6 +325,11 @@ class DemiLiaison extends createjs.Container
 			@type {Array}
 			*/
 		_consignesCinematiques = ["","",""];
+		
+		
+		/** Liste de variables préchargées pour la simulation (pour pas les calculer 50000 fois)
+			@type {Object} */
+		_VS = {};
 	
 	//==========================
 	//getter/setter
@@ -332,7 +337,7 @@ class DemiLiaison extends createjs.Container
 
 
 			/** Getter / Setter qui impose ou renvoie la couleur. En setter, met automatiquement les dessins à jour en appelant {@link updateCouleurGraphismes}.
-			@param  {String} c - Couleur (de préférence format "#RRVVBB").
+			@param  {String} [c] - Couleur (de préférence format "#RRVVBB").
 			@return {String} Couleur. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
 			*/
 		couleur(c)
@@ -346,7 +351,7 @@ class DemiLiaison extends createjs.Container
 		}
 
 			/** Getter / Setter qui impose ou renvoie l'épaisseur des traits. En setter, met automatiquement les dessins à jour en appelant {@link updateEpaisseurGraphismes} 
-			@param {Number} e - Épaisseur en px.
+			@param {Number} [e] - Épaisseur en px.
 			@return {Number} Épaisseur en px. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
 			*/
 		epaisseur(e)
@@ -361,7 +366,7 @@ class DemiLiaison extends createjs.Container
 		}
 	
 			/** Getter / Setter qui donne la référence vers l'objet "autre moitié de liaison"
-			@param {DemiLiaison} d - Référence vers l'objet "demi-liaison" correspondant.
+			@param {DemiLiaison} [d] - Référence vers l'objet "demi-liaison" correspondant.
 			@return {DemiLiaison} Référence vers l'objet "demi-liaison" correspondant. En cas de Setter, c'est la nouvelle référence qui est renvoyée.
 			*/
 		demiSoeur(d)
@@ -372,7 +377,7 @@ class DemiLiaison extends createjs.Container
 		}
 
 			/** GGetter / Setter de la raideur des liaisons en force
-			@param {Number} k - Raideur.
+			@param {Number} [k] - Raideur.
 			@return {Number} Raideur. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
 			*/
 		k(k)
@@ -383,7 +388,7 @@ class DemiLiaison extends createjs.Container
 		}
 		
 			/** Getter / Setter de la raideur des laisons en moment (quand il y a lieu)
-			@param {Number} k - Raideur.
+			@param {Number} [k] - Raideur (en Nm/°).
 			@return {Number} Raideur. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
 			*/
 		kRot(k)
@@ -394,7 +399,7 @@ class DemiLiaison extends createjs.Container
 		}
 
 			/** Getter / Setter qui impose le mouvement de la liaison
-			@param {Boolean} p - true si on veut piloter, false si elle est libre.
+			@param {Boolean} [p] - true si on veut piloter, false si elle est libre.
 			@return {Boolean} true si on veut piloter, false si elle est libre. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
 			*/
 		pilotee(p)
@@ -408,7 +413,7 @@ class DemiLiaison extends createjs.Container
 		}
 		
 			/** Getter / Setter du genre de la liaison (male / femelle)
-			@param {String} g - Genre : "male" ou "femelle". "neutre" par défaut dans la classe abstraite.
+			@param {String} [g] - Genre : "male" ou "femelle". "neutre" par défaut dans la classe abstraite.
 			@return {String} Genre. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
 			*/
 		genre(g)
@@ -419,7 +424,7 @@ class DemiLiaison extends createjs.Container
 		}
 		
 			/** Getter / Setter de la reférence vers la classe d'équivalence à laquelle est associée la demi-liaison.
-			@param {Classe_Equivalence} c - Référence vers l'objet Classe_Equivalence.
+			@param {Classe_Equivalence} [c] - Référence vers l'objet Classe_Equivalence.
 			@return {Classe_Equivalence} Référence vers l'objet Classe_Equivalence. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
 			*/
 		classe(c)
@@ -430,7 +435,7 @@ class DemiLiaison extends createjs.Container
 		}
 				
 			/** Getter / Setter de la reférence du nombre de degrés de liberté de la liaison.
-			@param {Number} n - Nombre de DDL.
+			@param {Number} [n] - Nombre de DDL.
 			@return {Number} Nombre de DDL.. En cas de Setter, c'est la nouvelle valeur qui est renvoyée.
 			*/
 		nbDDL(n)
@@ -454,6 +459,9 @@ class DemiLiaison extends createjs.Container
 			}
 			return this._consignesCinematiques[i-1];
 		}
+		
+		
+		
 	//==========================
 	//Autres fonctions membres
 	//==========================
@@ -483,7 +491,7 @@ class DemiLiaison extends createjs.Container
 			return this.rotation + this.classe().rotation;
 		}
 		
-			/** Fonction qui renvoie le vecteur {x,y} (en coordonnées absolues) entre cette demi liaison et sa soeur
+			/** Fonction qui renvoie le vecteur {x,y} (en coordonnées absolues) entre cette demi liaison (L1) et sa soeur (L2)
 			@return {Object} {x:   , y: }
 			*/
 		L1L2()
@@ -498,6 +506,7 @@ class DemiLiaison extends createjs.Container
 				return {x:0,y:0}
 		}
 		
+		
 			/** Fonction qui renvoie (en coordonnées absolues du schema) le vecteur entre l'origine de la classe d'équivalence mère, et cette liaison
 			@return {Object} {x:   , y: }
 			*/
@@ -507,6 +516,60 @@ class DemiLiaison extends createjs.Container
 			var L1 = this.localToLocal(0,0,schema);
 			return {x: L1.x-O1.x, y:L1.y-O1.y}
 		}
+		
+		
+			/** MÉTHODE ABSTRAITE - Fonction qui met à jour la variable this._VS, qui contient les constantes de simulation (histoire de ne les calculer qu'une fois par pas de temps).
+			@return {Object} Objet contenant toutes les constantes de simulation.
+			*/
+		updateConstantesSimulation()
+		{
+			/* Mettre a jour les constantes dans this._VS */
+			return this._VS
+		}
+		
+		
+			/**MÉTHODE ABSTRAITE -  Fonction qui renvoie les coefficients de la matrice K
+			
+			@param {Number} _eq - N° de l'équation (correspond à 'quelle ligne ?') du PFS. Peut-être 0 (="TRS sur x"), 1 (="TRS sur y") ou 2 (="TMS en O1' sur theta").
+			@param {Number} _i - Inconnue (correspond à 'quelle colonne ?'). Par exemple : 0:dx1, 1:dy1, 2:dtheta1, etc.
+			*/
+		getCoeff_K(_eq, _i)
+		{
+			return 0
+		}
+			
+			/** MÉTHODE ABSTRAITE - Fonction qui renvoie les coefficients du second membre F
+			
+			@param {Number} _eq - N° de l'équation (correspond à 'quelle ligne ?') du PFS. Peut-être 0 (="TRS sur x"), 1 (="TRS sur y") ou 2 (="TMS en O1' sur theta").
+			*/
+		getCoeff_F(_eq)
+		{
+			return 0;
+		}
+				
+		
+			/** Fonction qui "fabrique" la matrice K, de dimension (3x6) correspondant à la demi-liaison. Cette matrice est ensuite ajoutée à la matrice K globale, via la méthode {@link remplisSysteme_liaison}
+			
+			@return {Array} Matrice K*/
+		
+		construit_K_local()
+		{
+			return 	[[this.getCoeff_K(0,0), this.getCoeff_K(0,1), this.getCoeff_K(0,2), this.getCoeff_K(0,3), this.getCoeff_K(0,4), this.getCoeff_K(0,5)],
+				[this.getCoeff_K(1,0), this.getCoeff_K(1,1), this.getCoeff_K(1,2), this.getCoeff_K(1,3), this.getCoeff_K(1,4), this.getCoeff_K(1,5)],
+				[this.getCoeff_K(2,0), this.getCoeff_K(2,1), this.getCoeff_K(2,2), this.getCoeff_K(2,3), this.getCoeff_K(2,4), this.getCoeff_K(2,5)]]
+		}
+		
+			/** Fonction qui "fabrique" le second membre F, de dimension (3x1) correspondant à la demi-liaison. Cette matrice est ensuite ajoutée à la matrice F globale, via la méthode {@link remplisSysteme_liaison}
+			
+			@return {Array} Matrice F (second membre)*/
+		
+		construit_F_local()
+		{
+			return 	[	this.getCoeff_F(0),
+					this.getCoeff_F(1),
+					this.getCoeff_F(2)];
+		}
+		
 
 			/** MÉTHODE ABSTRAITE - Ajoute (= modifie en place dans les grosses matrices K et F globales) la sous partie liée à la liaison
 			@param {Array} K - Référence vers la matrice K générale du système global
@@ -521,11 +584,15 @@ class DemiLiaison extends createjs.Container
 			var n2 = this.demiSoeur().classe().numero() // Numéro de la CE de la demi-Soeur
 		
 			//Portion de systeme, lié aux inconnues : X = [[dx1], [dy1], [dtheta1], [dx2], [dy2], [dtheta2]] ou 1 est la demi-liaison courante et 2 et la demi-liaison soeur.
-			var KK = [	[0,	0,	0,	0,	0,	0],
+		/*	var KK = [	[0,	0,	0,	0,	0,	0],
 					[0,	0,	0,	0,	0,	0],
 					[0,	0,	0,	0,	0,	0]	] ;
 					
-			var FF = [0	,	0	,	0] ;
+			var FF = [0	,	0	,	0] ;*/
+			
+			this.updateConstantesSimulation();
+			var KK = this.construit_K_local();	
+			var FF = this.construit_F_local();
 			
 
 			//On recopie dans les bonnes lignes de K et F
@@ -575,6 +642,14 @@ class DemiLiaison extends createjs.Container
 		autoSupprime()
 		{
 			this.classe().supprimeDemiLiaison(this);
+		}
+		
+			/** Fonction abstraite qui calcule le score (= l'écart) entre une demi-liaison et sa demi-soeur.
+			@ return {Number} Score
+			*/
+		getScore()
+		{
+			return 0;
 		}
 	
 }

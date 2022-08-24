@@ -1,43 +1,61 @@
 //On crée les classe d'équivalence
-C0=new Classe_Equivalence();
-C1=new Classe_Equivalence();
-C2=new Classe_Equivalence();
-C3=new Classe_Equivalence();
-
-//On change les coordonnées des classes
-C2.x = 50;
-C2.y = -150
-C3.x = 500
-
-
-
-//On bloque C0 (le bati)
-C1.bloque(true);
-
+bati = new Classe_Equivalence();
+manivelle  = new Classe_Equivalence();
+bielle = new Classe_Equivalence();
+piston = new Classe_Equivalence();
 
 //Ajout des classes
-schema.ajouteClasse(C0);
-schema.ajouteClasse(C1);
-schema.ajouteClasse(C2);
-schema.ajouteClasse(C3);
-	
-	
+SCHEMA.ajouteClasse(bati);
+SCHEMA.ajouteClasse(manivelle);
+SCHEMA.ajouteClasse(bielle);
+SCHEMA.ajouteClasse(piston);
+
+
+// Position
+posO = {x:0,y:0};
+posA = {x:0, y:-150, uniteSI:false};
+posB = {x:500, y:0, uniteSI:false};
+//posC = {x:750, y:0, uniteSI:false};
+posC = {x:700, y:0, uniteSI:false};
+posD = {x:1000, y:0, uniteSI:false};
+//On change les coordonnées des classes
+//C2.x = 50;
+//C2.y = -150
+//C3.x = 500
+
+// Option des classes
+bati.bloque(true);
+bielle.changePosition(posA) ;
+piston.changePosition(posB) ;
 
 //dessin
-C1.dessineLigne(30,0,-30,-100,false);
-C2.dessineLigne(-20,50,220,150,false);
-C3.dessineLigne(-50,0,-200,0,false);
+manivelle.dessineLigne(posO,posA) ;
+bielle.dessineLigne(posA, posB) ;
+piston.dessineLigne(posB, {x:posC.x, y:posC.y+30, uniteSI:false})
+
+//C3.dessineLigne(-50,0,-200,0,false);
+
+
+
+
+
+
 
 
 //Liaisons
-LIAISON1 = ajouteLiaison(0,1,"pivot",{x:0,y:0})
-LIAISON1.L1.pilotee(true); // OU L2, c'est pareil
-LIAISON1.L1.rotation=90
-LIAISON2 = ajouteLiaison(1,2,"pivot",{x:0,y:-100})
-LIAISON3 = ajouteLiaison(2,3,"pivot",{x:300,y:0})
-LIAISON3 = ajouteLiaison(3,0,"glissiere",{x:500,y:0})
+LIAISON1 = ajouteLiaison(bati,manivelle,"pivot",posO)
+	LIAISON1.L1.pilotee(true); // OU L2, c'est pareil
+	LIAISON1.L1.rotation=90
+	LIAISON1.L1.consignesCinematiques(1,"0.5*t")
+LIAISON2 = ajouteLiaison(manivelle,bielle,"pivot",posA);
+	LIAISON2.L1.rotation=90;
+	LIAISON2.L2.rotation=Math.atan2(posB.y-posA.y,posB.x-posA.x)*180/Math.PI;
+LIAISON3 = ajouteLiaison(bielle,piston,"pivot",posB)
+	LIAISON3.L1.rotation=Math.atan2(posB.y-posA.y,posB.x-posA.x)*180/Math.PI+180;
+LIAISON4 = ajouteLiaison(bati,piston,"glissiere",posC)
+/*	LIAISON4.L1.rotation+=90
+	LIAISON4.L2.rotation+=90*/
 
 
-
-
+SCHEMA.x = 200 ;
 schema.sauvePositions();	//On sauvegarde les positions initiales

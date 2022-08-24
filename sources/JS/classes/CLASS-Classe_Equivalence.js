@@ -1222,4 +1222,5 @@ class Classe_Equivalence extends createjs.Container
 				P.MAJ();
 			});
 		}
+		
 }
